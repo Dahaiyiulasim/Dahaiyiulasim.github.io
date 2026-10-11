@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E5A2B">
+<title>Ulaşım Rehberi</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg:#F4F7F3;--card:#fff;--ink:#10261A;--muted:#4A5B52;--brand:#0E5A2B;--bright:#3DDC57;--onbright:#0A2E1A;--soft:#E3EDE3;--line:#C9D8CC;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1A12;--card:#14261B;--ink:#E8F3EA;--muted:#9DB5A5;--brand:#7DEB91;--soft:#1D3526;--line:#2C4A38}}
+:root[data-theme="dark"]{--bg:#0C1A12;--card:#14261B;--ink:#E8F3EA;--muted:#9DB5A5;--brand:#7DEB91;--soft:#1D3526;--line:#2C4A38}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Barlow','Helvetica Neue',Arial,sans-serif;font-size:17px;line-height:1.4}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 40px}
+.cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700}
+.top{background:#0E5A2B;color:#fff;padding:28px 20px 24px;margin:0 -16px 20px}
+.top .k{font-size:14px;letter-spacing:3px;color:#CFE8D5;font-weight:500}
+.top h1{margin:2px 0 0;font-size:44px;line-height:1.05}
+.top .t{font-size:15px;letter-spacing:5px;color:#7DEB91;font-weight:600;margin-bottom:14px}
+.back{display:inline-block;color:#CFE8D5;text-decoration:none;font-size:16px;margin-bottom:12px;padding:6px 0;min-height:32px}
+.card{display:block;width:100%;text-align:left;background:var(--card);border:0;border-radius:14px;padding:16px;margin-bottom:12px;color:inherit;font:inherit;text-decoration:none;cursor:pointer}
+.card .row{display:flex;gap:14px;align-items:flex-start}
+.badge{flex:none;min-width:64px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--bright);color:var(--onbright);font-size:32px;padding:0 8px}
+.route{font-size:18px;font-weight:500;margin:0}
+.go{margin-top:10px;color:var(--brand);font-weight:600;font-size:16px}
+.tabs{display:flex;background:var(--soft);border-radius:12px;padding:4px;margin:16px 0 14px}
+.tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:600 16px 'Barlow',Arial,sans-serif;padding:11px 8px;border-radius:9px;cursor:pointer;min-height:44px}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--ink)}
+.next{background:var(--card);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.next small{display:block;color:var(--muted);font-size:14px}
+.next b{font-size:34px;line-height:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
+.chip{background:var(--card);border-radius:10px;text-align:center;padding:10px 0;font-size:22px}
+.chip.past{opacity:.4}
+.chip.nx{background:var(--bright);color:var(--onbright);opacity:1}
+.note{background:var(--soft);border-radius:12px;padding:12px 16px;margin-top:14px;font-size:16px}
+h2{font-size:15px;letter-spacing:3px;color:var(--muted);font-weight:600;margin:28px 0 12px}
+ol.stops{list-style:none;margin:0;padding:0}
+ol.stops li{position:relative;padding:0 0 18px 30px;font-size:18px}
+ol.stops li:before{content:"";position:absolute;left:7px;top:8px;bottom:-8px;width:3px;background:var(--line)}
+ol.stops li:last-child:before{display:none}
+ol.stops li:after{content:"";position:absolute;left:0;top:5px;width:17px;height:17px;border-radius:50%;background:var(--card);border:3px solid var(--brand)}
+ol.stops li.here:after{background:var(--bright)}
+ol.stops li.here{font-weight:600}
+.here small{display:inline-block;margin-left:8px;background:var(--bright);color:var(--onbright);border-radius:6px;padding:0 8px;font-size:13px;font-weight:600}
+.chip.st:not(.nx){color:#C62828}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.st:not(.nx){color:#FF8A8A}}
+:root[data-theme="dark"] .chip.st:not(.nx){color:#FF8A8A}
+.nm{font-size:22px;font-weight:600}
+.mbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.mb{display:inline-flex;min-width:38px;height:30px;padding:0 8px;border-radius:7px;background:var(--bright);color:var(--onbright);font-size:19px;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><noscript>Bu sayfa için JavaScript gerekir.</noscript></div>
+<script>
+// ===== VERİ BÖLÜMÜ: saatleri ve güzergâhları buradan değiştirebilirsin =====
+// Kurallar: tırnakları (") ve virgülleri silme. Saatler arası tek boşluk bırak.
+// Saat anahtarları: hi=Hafta İçi, hs=Hafta Sonu, ct=Cumartesi, pz=Pazar, her=Her gün.
+// guzergah: bölgeler " > " ile ayrılır. yer: "Bu durak" etiketinin konacağı bölge.
+// kirmizi:true ise yildiz altındaki saatler kırmızı görünür.
+var VERI={bolgeler:[
+  {id:"dunya-bankasi", ad:"Dünya Bankası", duraklar:[
+      {id:"dunya-bankasi-15", ad:"Dünya Bankası 15",
+       not:"145 nolu hat, tramvaydan sonra tamamlayıcı aktarma desteklemektedir. Renkli saatlerde 08.00'e kadar 24 ve 134 hatları ile sanayi otobüsleri geçmektedir.",
+       sira:["13", "81", "81B", "85", "88", "105", "145", "N1"],
+       hatlar:{
+    "13":{no:"13", guzergah:"Umuttepe > Dünya Bankası > Yeşilova > Yahya Kaptan > Otogar > Yuvam Akarca > Alikahya", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:45 07:15 07:30 07:45 08:00 08:35 09:15 09:45 10:15 10:45 11:15 11:45 12:15 12:45 13:45 14:15 14:45 15:15 15:45 16:15 16:45 17:15 17:45 18:15 18:45 19:15 19:45 20:15 20:45 21:15 22:15",
+        hs:"07:30 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:30 17:30 18:30 19:30 20:30 21:30"},
+      yildiz:{hi:"07:15 07:30"},
+      notlar:{hi:"* Bu seferler Şehit Öğretmen Ergin Komut Mesleki ve Teknik Anadolu Lisesine gider."}},
+    "81":{no:"81", guzergah:"Bayındırlık > Dünya Bankası > Gündoğdu > Şehir H. > Yeşilova > Çarşı > Fevziye", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:25 07:05 07:15 07:45 08:09 08:40 09:30 10:30 11:30 12:30 13:30 14:30 15:25 16:10 16:45 17:15 17:45 18:30 20:00 21:00 22:00 23:00",
+        ct:"06:30 07:30 08:30 09:30 10:30 11:30 12:30 13:30 14:20 15:20 16:20 17:20 18:20 19:00 20:00 21:00 22:00 23:00",
+        pz:"06:30 07:30 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:25 17:05 18:05 20:00 21:00 22:00 23:00"}},
+    "81B":{no:"81B", guzergah:"Bayındırlık > Dünya Bankası > Gündoğdu > Boğazova > Yeşilova > Çarşı > Fevziye", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:50 07:25 07:35 07:57 08:23 09:05 10:00 11:00 12:00 13:00 14:00 15:00 15:50 16:30 17:00 17:30 18:05 19:00 19:30 20:30 21:30 22:30 23:40",
+        ct:"07:00 08:00 09:00 10:00 11:00 12:00 13:00 13:55 14:40 15:00 15:40 16:00 16:40 17:00 17:40 18:00 18:40 19:30 20:30 21:30 22:30 23:40",
+        pz:"07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 16:45 17:45 18:30 19:30 20:30 21:30 22:30 23:40"}},
+    "85":{no:"85", guzergah:"Umuttepe > Dünya Bankası > Üçyol > Çarşı > Seka > Kuruçeşme > Akpınar Toki", yer:"Dünya Bankası", kirmizi:true,
+      saatler:{
+        her:"07:30 08:00 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:30 17:30 18:30 19:30 20:30 21:30 22:30"},
+      yildiz:{her:"07:30"},
+      notlar:{her:"* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar."}},
+    "88":{no:"88", guzergah:"Bayındırlık > Dünya Bankası > Üçyol > Çarşı > Halkevi > Tren Garı", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:00 06:30 06:55 07:10 07:23 07:40 07:52 08:12 08:30 08:50 09:15 09:45 10:15 10:40 11:15 11:40 12:00 12:20 12:40 13:00 13:20 13:45 14:05 14:25 14:45 15:05 15:25 15:45 16:05 16:11 16:17 16:27 16:40 16:55 17:10 17:21 17:32 17:45 18:00 18:15 18:35 18:55 19:20 19:45 20:10 20:35 21:00 21:30 22:00 22:30 23:00 23:30 00:10",
+        ct:"06:00 06:25 06:55 07:15 07:45 08:15 08:30 08:45 09:10 09:40 10:10 10:40 11:10 11:35 12:00 12:20 12:40 13:00 13:20 13:40 14:00 14:20 14:40 15:00 15:20 15:40 16:00 16:20 16:38 16:55 17:10 17:25 17:40 17:55 18:10 18:25 18:45 19:10 19:35 20:00 20:30 21:00 21:30 22:00 22:30 23:00 23:30 00:15",
+        pz:"06:30 07:00 07:45 08:20 08:40 09:15 09:45 10:15 10:45 11:15 11:45 12:15 12:40 13:00 13:20 13:40 14:00 14:20 14:40 15:00 15:20 15:40 16:00 16:20 16:40 17:00 17:20 17:40 18:00 18:20 18:40 19:05 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 23:30 00:15"},
+      notlar:{hepsi:"Resmi tatillerde pazar günü saatleriyle çalışır."}},
+    "105":{no:"105", guzergah:"Umuttepe > Dünya Bankası > Gündoğdu > Şehir Hastanesi > Yeşilova > Üçyol > Çarşı > Seka > Öğretmenler > R. Seymen Camii", yer:"Dünya Bankası", kirmizi:true,
+      saatler:{
+        hi:"07:00 07:30 08:20 09:20 10:20 11:05 12:05 13:05 14:05 15:05 16:05 17:05 18:05 19:05 20:05 21:05 22:30",
+        hs:"07:15 08:20 09:05 10:05 12:05 13:05 14:05 16:05 17:05 18:05 19:45 21:05 22:05 22:30"},
+      yildiz:{hi:"07:00 07:30", hs:"07:15"},
+      notlar:{hi:"* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar.", hs:"* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar."}},
+    "145":{no:"145", guzergah:"Umuttepe > Dünya Bankası > Şehir Hastanesi > Üçyol > Çarşı > Seka > 60 Evler", yer:"Dünya Bankası",
+      saatler:{
+        hi:"07:00 07:30 08:20 08:40 09:20 09:50 10:20 10:50 11:20 11:50 12:20 12:50 13:50 14:20 14:50 15:20 15:50 16:50 17:20 17:50 18:20 18:50 19:50 20:50 21:50 22:50 23:35",
+        hs:"07:30 08:20 08:40 09:40 10:40 11:40 12:40 13:40 14:40 15:40 16:40 17:40 18:40 19:40 20:40 21:40 22:40 23:40"},
+      notlar:{hi:"07:00 seferi Dünya Bankası Su Deposundan kalkar."}},
+    "N1":{no:"N1", guzergah:"Umuttepe > Dünya Bankası > Şehir Hastanesi > Otogar > Üçyol > Çarşı > Batı Terminali", yer:"Dünya Bankası",
+      saatler:{
+        her:"02:00 03:00 05:00"}}}},
+      {id:"malta-ayaztepe-camii-b", ad:"Malta Ayaztepe Camii B",
+       sira:["13", "85", "88", "145", "N1"],
+       hatlar:{
+    "13":{no:"13", guzergah:"Umuttepe > Dünya Bankası > Yeşilova > Yahya Kaptan > Otogar > Yuvam Akarca > Alikahya", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:45 07:15 07:30 07:45 08:00 08:35 09:15 09:45 10:15 10:45 11:15 11:45 12:15 12:45 13:45 14:15 14:45 15:15 15:45 16:15 16:45 17:15 17:45 18:15 18:45 19:15 19:45 20:15 20:45 21:15 22:15",
+        hs:"07:30 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:30 17:30 18:30 19:30 20:30 21:30"},
+      yildiz:{hi:"07:15 07:30"},
+      notlar:{hi:"* Bu seferler Şehit Öğretmen Ergin Komut Mesleki ve Teknik Anadolu Lisesine gider."}},
+    "85":{no:"85", guzergah:"Akpınar Toki > Kuruçeşme > Seka > Halkevi > Çarşı > Üçyol > Dünya Bankası > Umuttepe", yer:"Dünya Bankası",
+      saatler:{
+        hi:"07:30 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:30 17:30 18:30 19:30 20:30 21:30 22:30",
+        hs:"07:30 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:30 17:30 18:30 19:30 20:30 21:30 22:30"}},
+    "88":{no:"88", guzergah:"Tren Garı > Halkevi > Çarşı > Üçyol > Dünya Bankası > Bayındırlık", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:30 07:00 07:25 07:40 07:53 08:10 08:22 08:47 09:05 09:25 09:50 10:20 10:50 11:15 11:50 12:15 12:35 12:55 13:15 13:35 13:55 14:20 14:40 15:00 15:20 15:40 16:00 16:20 16:40 16:46 16:52 17:02 17:15 17:30 17:45 17:56 18:07 18:20 18:35 18:50 19:10 19:30 19:50 20:15 20:40 21:05 21:30 22:00 22:30 23:00 23:30 00:00 00:40",
+        ct:"06:30 06:55 07:25 07:45 08:15 08:45 09:00 09:15 09:45 10:15 10:45 11:15 11:45 12:10 12:35 12:55 13:15 13:35 13:55 14:15 14:35 14:55 15:15 15:35 15:55 16:15 16:35 16:55 17:13 17:30 17:45 18:00 18:15 18:30 18:45 19:00 19:20 19:40 20:05 20:30 21:00 21:30 22:00 22:30 23:00 23:30 00:00 00:45",
+        pz:"07:00 07:30 08:15 08:50 09:10 09:45 10:15 10:45 11:15 11:50 12:20 12:50 13:15 13:35 13:55 14:15 14:35 14:55 15:15 15:35 15:55 16:15 16:35 16:55 17:15 17:35 17:55 18:15 18:35 18:55 19:15 19:35 20:00 20:30 21:00 21:30 22:00 22:30 23:00 23:30 00:00 00:45"},
+      notlar:{hepsi:"Resmi tatillerde pazar günü saatleriyle çalışır."}},
+    "145":{no:"145", guzergah:"Umuttepe > Dünya Bankası > Şehir Hastanesi > Üçyol > Çarşı > Seka > 60 Evler", yer:"Dünya Bankası",
+      saatler:{
+        hi:"07:00 07:30 08:20 08:40 09:20 09:50 10:20 10:50 11:20 11:50 12:20 12:50 13:50 14:20 14:50 15:20 15:50 16:50 17:20 17:50 18:20 18:50 19:50 20:50 21:50 22:50 23:35",
+        hs:"07:30 08:20 08:40 09:40 10:40 11:40 12:40 13:40 14:40 15:40 16:40 17:40 18:40 19:40 20:40 21:40 22:40 23:40"},
+      notlar:{hi:"07:00 seferi Dünya Bankası Su Deposundan kalkar."}},
+    "N1":{no:"N1", guzergah:"Umuttepe > Dünya Bankası > Şehir Hastanesi > Otogar > Üçyol > Çarşı > Batı Terminali", yer:"Dünya Bankası",
+      saatler:{
+        her:"02:00 03:00 05:00"}}}},
+      {id:"nazim-hikmet-caddesi-a", ad:"Nazım Hikmet Caddesi A",
+       not:"Renkli saatlerde 08.00'e kadar 24 ve 134 hatları ile sanayi otobüsleri geçmektedir.",
+       sira:["85", "88", "105"],
+       hatlar:{
+    "85":{no:"85", guzergah:"Umuttepe > Dünya Bankası > Üçyol > Çarşı > Seka > Kuruçeşme > Akpınar Toki", yer:"Dünya Bankası", kirmizi:true,
+      saatler:{
+        her:"07:30 08:00 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:30 17:30 18:30 19:30 20:30 21:30 22:30"},
+      yildiz:{her:"07:30"},
+      notlar:{her:"* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar."}},
+    "88":{no:"88", guzergah:"Bayındırlık > Dünya Bankası > Üçyol > Çarşı > Halkevi > Tren Garı", yer:"Dünya Bankası",
+      saatler:{
+        hi:"06:00 06:30 06:55 07:10 07:23 07:40 07:52 08:12 08:30 08:50 09:15 09:45 10:15 10:40 11:15 11:40 12:00 12:20 12:40 13:00 13:20 13:45 14:05 14:25 14:45 15:05 15:25 15:45 16:05 16:11 16:17 16:27 16:40 16:55 17:10 17:21 17:32 17:45 18:00 18:15 18:35 18:55 19:20 19:45 20:10 20:35 21:00 21:30 22:00 22:30 23:00 23:30 00:10",
+        ct:"06:00 06:25 06:55 07:15 07:45 08:15 08:30 08:45 09:10 09:40 10:10 10:40 11:10 11:35 12:00 12:20 12:40 13:00 13:20 13:40 14:00 14:20 14:40 15:00 15:20 15:40 16:00 16:20 16:38 16:55 17:10 17:25 17:40 17:55 18:10 18:25 18:45 19:10 19:35 20:00 20:30 21:00 21:30 22:00 22:30 23:00 23:30 00:15",
+        pz:"06:30 07:00 07:45 08:20 08:40 09:15 09:45 10:15 10:45 11:15 11:45 12:15 12:40 13:00 13:20 13:40 14:00 14:20 14:40 15:00 15:20 15:40 16:00 16:20 16:40 17:00 17:20 17:40 18:00 18:20 18:40 19:05 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 23:30 00:15"},
+      notlar:{hepsi:"Resmi tatillerde pazar günü saatleriyle çalışır."}},
+    "105":{no:"105", guzergah:"Umuttepe > Dünya Bankası > Gündoğdu > Şehir Hastanesi > Yeşilova > Üçyol > Çarşı > Seka > Öğretmenler > R. Seymen Camii", yer:"Dünya Bankası", kirmizi:true,
+      saatler:{
+        hi:"07:00 07:30 08:20 09:20 10:20 11:05 12:05 13:05 14:05 15:05 16:05 17:05 18:05 19:05 20:05 21:05 22:30",
+        hs:"07:15 08:20 09:05 10:05 12:05 13:05 14:05 16:05 17:05 18:05 19:45 21:05 22:05 22:30"},
+      yildiz:{hi:"07:00 07:30", hs:"07:15"},
+      notlar:{hi:"* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar.", hs:"* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar."}}}}
+  ]}
+]};
+// ===== VERİ BÖLÜMÜ SONU =====
+
+// ===== MOTOR (buradan aşağısına dokunma) =====
+var LAB={hi:"Hafta İçi",hs:"Hafta Sonu",ct:"Cumartesi",pz:"Pazar",her:"Her Gün"};
+var app=document.getElementById("app"),tab=null,prev="",cur=location.hash;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function L(x){return x?String(x).split(" "):[]}
+function mins(t){var p=t.split(":"),m=+p[0]*60+ +p[1];return m<330?m+1440:m}
+function norm(x){return x&&x!=="#"?x:"#"}
+function keysOf(h){var s=h.saatler;if(!s)return[];if(s.her!==undefined)return["her"];return s.ct!==undefined?["hi","ct","pz"]:["hi","hs"]}
+function todayKey(h){var s=h.saatler||{};if(s.her!==undefined)return"her";var d=new Date(Date.now()-198e5).getDay();if(d===0)return s.pz!==undefined?"pz":"hs";if(d===6)return s.ct!==undefined?"ct":"hs";return"hi"}
+function ust(back,kicker,title){
+var h='<div class="top">';
+if(back)h+='<a class="back" href="'+back.href+'">‹ '+esc(back.text)+'</a>';else h+='<div class="t">ULAŞIM REHBERİ</div>';
+if(kicker)h+='<div class="k">'+esc(kicker)+'</div>';
+return h+'<h1 class="cond">'+esc(title)+'</h1></div>'}
+function home(){
+var h=ust(null,"","Bölgeler")+'<h2 style="margin-top:0">BÖLGE SEÇİN</h2>';
+VERI.bolgeler.forEach(function(r){h+='<a class="card" href="#'+r.id+'"><div class="nm">'+esc(r.ad)+'</div><div class="go">'+r.duraklar.length+' durak ›</div></a>'});
+return h}
+function bolge(r){
+var h=ust({href:"#",text:"Tüm bölgeler"},"BÖLGE",r.ad)+'<h2 style="margin-top:0">DURAKLAR</h2>';
+r.duraklar.forEach(function(d){
+h+='<a class="card" href="#'+r.id+'/'+d.id+'"><div class="nm">'+esc(d.ad)+'</div><div class="mbs">'+d.sira.map(function(k){return'<span class="mb cond">'+esc(d.hatlar[k].no)+'</span>'}).join("")+'</div></a>'});
+return h}
+function durak(r,d){
+var h=ust({href:"#"+r.id,text:r.ad},"DURAK ADI",d.ad)+'<h2 style="margin-top:0">BU DURAKTAN GEÇEN HATLAR</h2>';
+d.sira.forEach(function(k){var l=d.hatlar[k];
+h+='<a class="card" href="#'+r.id+'/'+d.id+'/'+encodeURIComponent(k)+'"><div class="row"><div class="badge cond">'+esc(l.no)+'</div><p class="route">'+l.guzergah.split(" > ").map(esc).join(" → ")+'</p></div><div class="go">'+(l.saatler?"Hareket saatleri ›":"Güzergâh ›")+'</div></a>'});
+if(d.not)h+='<div class="note">'+esc(d.not)+'</div>';
+return h}
+function hat(r,d,l){
+var keys=keysOf(l),tk=todayKey(l);
+if(!tab||keys.indexOf(tab)<0)tab=tk;
+var times=l.saatler?L(l.saatler[tab]):[],star=L(l.yildiz&&l.yildiz[tab]);
+var now=new Date(),nm=now.getHours()*60+now.getMinutes();if(nm<330)nm+=1440;
+var isToday=tab===tk&&times.length>0,nxt=-1,i;
+if(isToday){for(i=0;i<times.length;i++){if(mins(times[i])>=nm){nxt=i;break}}}
+var stops=l.guzergah.split(" > ");
+var h='<div class="top"><a class="back" href="#'+r.id+'/'+d.id+'">‹ '+esc(d.ad)+'</a><div style="display:flex;gap:14px;align-items:center"><div class="badge cond">'+esc(l.no)+'</div><div class="cond" style="font-size:26px;line-height:1.1">'+esc(stops[0])+' – '+esc(stops[stops.length-1])+'</div></div></div>';
+if(!l.saatler){if(l.siklik)h+='<div class="note" style="margin-top:0">Sefer sıklığı: '+esc(l.siklik)+'.</div>'}
+else if(keys.length<2)h+='<h2 style="margin-top:0">HER GÜN</h2>';
+else h+='<div class="tabs" role="tablist">'+keys.map(function(k){return'<button role="tab" data-t="'+k+'" aria-selected="'+(tab===k)+'">'+LAB[k]+'</button>'}).join("")+'</div>';
+if(isToday)h+='<div class="next"><div><small>Sıradaki sefer</small><b class="cond">'+(nxt>=0?times[nxt]:"—")+'</b></div><small style="text-align:right">'+(nxt>=0?"":"Bugünkü seferler bitti")+'</small></div>';
+if(times.length){
+h+='<div class="grid">';
+times.forEach(function(t,j){var c="chip cond",st=star.indexOf(t)>-1;if(l.kirmizi&&st)c+=" st";if(isToday){if(j===nxt)c+=" nx";else if(nxt===-1||j<nxt)c+=" past"}h+='<div class="'+c+'">'+t+(st?"*":"")+'</div>'});
+h+='</div><div class="note">Hareket saatleri, ilk duraktan kalkış saatini gösterir.</div>'}
+[tab,"hepsi"].forEach(function(k){if(l.notlar&&l.notlar[k])h+='<div class="note">'+esc(l.notlar[k])+'</div>'});
+h+='<h2>GÜZERGÂH</h2><ol class="stops">';
+stops.forEach(function(s){var here=s===l.yer;h+='<li'+(here?' class="here"':'')+'>'+esc(s)+(here?'<small>Bu durak</small>':'')+'</li>'});
+return h+'</ol>'}
+function render(){
+var p=location.hash.replace(/^#\/?/,"").split("/").map(function(x){try{return decodeURIComponent(x)}catch(e){return x}}).filter(Boolean);
+var r=null,d=null,l=null,h,title="Ulaşım Rehberi";
+VERI.bolgeler.forEach(function(x){if(x.id===p[0])r=x});
+if(r)r.duraklar.forEach(function(x){if(x.id===p[1])d=x});
+if(d&&d.hatlar[p[2]])l=d.hatlar[p[2]];
+if(l){h=hat(r,d,l);title=l.no+" – "+d.ad}
+else if(d){tab=null;h=durak(r,d);title=d.ad+" – Ulaşım Rehberi"}
+else if(r){tab=null;h=bolge(r);title=r.ad+" – Ulaşım Rehberi"}
+else{tab=null;h=home()}
+app.innerHTML=h;document.title=title;window.scrollTo(0,0);
+Array.prototype.forEach.call(app.querySelectorAll(".tabs button"),function(b){b.onclick=function(){tab=b.getAttribute("data-t");render()}});
+var bk=app.querySelector(".back");
+if(bk)bk.onclick=function(e){if(norm(prev)===norm(bk.getAttribute("href"))){e.preventDefault();history.back()}}}
+window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;render()});
+render();
+</script>
+</body>
+</html>
