@@ -60,6 +60,12 @@ ol.stops li.here{font-weight:600}
 .chip.my:not(.nx){color:#1B7F37}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.mk:not(.nx){color:#FF8A8A}:root:not([data-theme="light"]) .chip.mp:not(.nx){color:#FF8AE2}:root:not([data-theme="light"]) .chip.my:not(.nx){color:#5BE37A}}
 :root[data-theme="dark"] .chip.mk:not(.nx){color:#FF8A8A}:root[data-theme="dark"] .chip.mp:not(.nx){color:#FF8AE2}:root[data-theme="dark"] .chip.my:not(.nx){color:#5BE37A}
+.gel{background:var(--card);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.geltarih{font-size:14px;color:var(--muted);font-weight:500}
+.yeni{margin-left:8px;background:var(--bright);color:var(--onbright);border-radius:6px;padding:0 6px;font-size:12px;font-weight:600}
+.gelbaslik{font-size:18px;font-weight:600;margin-top:2px}
+.gelmetin{font-size:16px;margin-top:2px}
+.gelbtn{display:block;width:100%;padding:12px;border:0;border-radius:12px;background:var(--soft);color:var(--ink);font:600 16px 'Barlow',Arial,sans-serif;cursor:pointer;min-height:44px}
 .hata{display:block;margin:28px 0 8px;padding:12px 16px;text-align:center;border-radius:12px;background:var(--soft);color:var(--ink);font-weight:600;text-decoration:none}
 .opp{display:block;margin:-6px 0 18px;padding:8px 0;color:var(--brand);font-weight:600;text-decoration:none}
 .mb{display:inline-flex;min-width:38px;height:30px;padding:0 8px;border-radius:7px;background:var(--bright);color:var(--onbright);font-size:19px;align-items:center;justify-content:center}
@@ -881,6 +887,14 @@ var VERI={bolgeler:[
         hs:"10:00 15:00"}}}}
   ]}
 ]};
+// ===== GELİŞMELER (ana sayfada görünür) =====
+// tarih: YIL-AY-GÜN şeklinde yaz (örn. 2026-10-11). baslik ve metin zorunlu, bolge isteğe bağlı.
+// Sıralamayı düşünme: site tarihe göre en yeniyi üste koyar. Son 14 gündekilerde "YENİ" rozeti çıkar.
+var GELISMELER=[
+  {tarih:"2026-10-11", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi yayında", metin:"Bölgedeki 23 durağın hat güzergâhları ve hareket saatleri sitede."},
+  {tarih:"2026-10-11", baslik:"Hata bildir düğmesi eklendi", metin:"Her durak ve hat sayfasının altından yanlış ya da eksik bilgiyi bize iletebilirsin."},
+  {tarih:"2026-10-11", baslik:"Gelişmeler bölümü açıldı", metin:"Sitedeki yenilikler ve tarihleri burada görünecek."}
+];
 // Hata bildirme formu (Google Form, önceden doldurulmuş bağlantı). Alan kodları: durak, hat, sayfa adresi.
 var HATA_FORMU="https://docs.google.com/forms/d/e/1FAIpQLSerQuPDQmtpUgdGSDv5t7Acz3R5Rs48MfegSD5TOlm3ZzTMJA/viewform?usp=pp_url";
 var HATA_ALANLARI={durak:"entry.1822978357",hat:"entry.831245240",sayfa:"entry.1292525955"};
@@ -891,7 +905,16 @@ var LAB={hi:"Hafta İçi",hs:"Hafta Sonu",ct:"Cumartesi",pz:"Pazar",her:"Her Gü
 var app=document.getElementById("app"),tab=null,prev="",cur=location.hash;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function L(x){return x?String(x).split(" "):[]}
-var SYM={k:"*",p:"†",y:"‡"};
+var SYM={k:"*",p:"†",y:"‡"},gelAcik=false,AYLAR=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+function tarihYaz(t){var p=t.split("-");return +p[2]+" "+AYLAR[+p[1]-1]+" "+p[0]}
+function gelismeler(){
+var g=(typeof GELISMELER!=="undefined"?GELISMELER:[]).slice().sort(function(a,b){return a.tarih<b.tarih?1:(a.tarih>b.tarih?-1:0)});
+if(!g.length)return"";
+var lim=gelAcik?g.length:5,now=Date.now(),h='<h2>GELİŞMELER</h2>';
+g.slice(0,lim).forEach(function(x){var yeni=now-new Date(x.tarih+"T00:00:00").getTime()<14*864e5;
+h+='<div class="gel"><div class="geltarih">'+tarihYaz(x.tarih)+(x.bolge?" · "+esc(x.bolge):"")+(yeni?'<span class="yeni">YENİ</span>':"")+'</div><div class="gelbaslik">'+esc(x.baslik)+'</div><div class="gelmetin">'+esc(x.metin)+'</div></div>'});
+if(g.length>5)h+='<button class="gelbtn">'+(gelAcik?"Daha az göster":"Tümünü göster ("+g.length+")")+'</button>';
+return h}
 function mins(t){var p=t.slice(0,5).split(":"),m=+p[0]*60+ +p[1];return m<330?m+1440:m}
 function hata(durak,hat){var u=HATA_FORMU+"&"+HATA_ALANLARI.durak+"="+encodeURIComponent(durak)+"&"+HATA_ALANLARI.hat+"="+encodeURIComponent(hat||"")+"&"+HATA_ALANLARI.sayfa+"="+encodeURIComponent(location.href);
 return'<a class="hata" href="'+u+'" target="_blank" rel="noopener">⚠ Hata bildir</a>'}
@@ -906,7 +929,7 @@ return h+'<h1 class="cond">'+esc(title)+'</h1></div>'}
 function home(){
 var h=ust(null,"","Bölgeler")+'<h2 style="margin-top:0">BÖLGE SEÇİN</h2>';
 VERI.bolgeler.forEach(function(r){h+='<a class="card" href="#'+r.id+'"><div class="nm">'+esc(r.ad)+'</div><div class="go">'+r.duraklar.length+' durak ›</div></a>'});
-return h}
+return h+gelismeler()}
 function bolge(r){
 var h=ust({href:"#",text:"Tüm bölgeler"},"BÖLGE",r.ad)+'<h2 style="margin-top:0">DURAKLAR</h2>';
 r.duraklar.forEach(function(d){
@@ -956,6 +979,8 @@ else if(r){tab=null;h=bolge(r);title=r.ad+" – Ulaşım Rehberi"}
 else{tab=null;h=home()}
 app.innerHTML=h;document.title=title;window.scrollTo(0,0);
 Array.prototype.forEach.call(app.querySelectorAll(".tabs button"),function(b){b.onclick=function(){tab=b.getAttribute("data-t");render()}});
+var gb=app.querySelector(".gelbtn");
+if(gb)gb.onclick=function(){var y=window.pageYOffset;gelAcik=!gelAcik;render();window.scrollTo(0,y)};
 var bk=app.querySelector(".back");
 if(bk)bk.onclick=function(e){if(norm(prev)===norm(bk.getAttribute("href"))){e.preventDefault();history.back()}}}
 window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;render()});
