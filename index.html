@@ -55,6 +55,7 @@ ol.stops li.here{font-weight:600}
 .chip.sg:not(.nx){color:#1B7F37}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.sg:not(.nx){color:#5BE37A}}
 :root[data-theme="dark"] .chip.sg:not(.nx){color:#5BE37A}
+.hata{display:block;margin:28px 0 8px;padding:12px 16px;text-align:center;border-radius:12px;background:var(--soft);color:var(--ink);font-weight:600;text-decoration:none}
 .opp{display:block;margin:-6px 0 18px;padding:8px 0;color:var(--brand);font-weight:600;text-decoration:none}
 .mb{display:inline-flex;min-width:38px;height:30px;padding:0 8px;border-radius:7px;background:var(--bright);color:var(--onbright);font-size:19px;align-items:center;justify-content:center}
 </style>
@@ -584,6 +585,9 @@ var VERI={bolgeler:[
         her:"02:00 04:00 05:50"}}}}
   ]}
 ]};
+// Hata bildirme formu (Google Form, önceden doldurulmuş bağlantı). Alan kodları: durak, hat, sayfa adresi.
+var HATA_FORMU="https://docs.google.com/forms/d/e/1FAIpQLSerQuPDQmtpUgdGSDv5t7Acz3R5Rs48MfegSD5TOlm3ZzTMJA/viewform?usp=pp_url";
+var HATA_ALANLARI={durak:"entry.1822978357",hat:"entry.831245240",sayfa:"entry.1292525955"};
 // ===== VERİ BÖLÜMÜ SONU =====
 
 // ===== MOTOR (buradan aşağısına dokunma) =====
@@ -592,6 +596,8 @@ var app=document.getElementById("app"),tab=null,prev="",cur=location.hash;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function L(x){return x?String(x).split(" "):[]}
 function mins(t){var p=t.split(":"),m=+p[0]*60+ +p[1];return m<330?m+1440:m}
+function hata(durak,hat){var u=HATA_FORMU+"&"+HATA_ALANLARI.durak+"="+encodeURIComponent(durak)+"&"+HATA_ALANLARI.hat+"="+encodeURIComponent(hat||"")+"&"+HATA_ALANLARI.sayfa+"="+encodeURIComponent(location.href);
+return'<a class="hata" href="'+u+'" target="_blank" rel="noopener">⚠ Hata bildir</a>'}
 function norm(x){return x&&x!=="#"?x:"#"}
 function keysOf(h){var s=h.saatler;if(!s)return[];if(s.her!==undefined)return["her"];return s.ct!==undefined?["hi","ct","pz"]:["hi","hs"]}
 function todayKey(h){var s=h.saatler||{};if(s.her!==undefined)return"her";var d=new Date(Date.now()-198e5).getDay();if(d===0)return s.pz!==undefined?"pz":"hs";if(d===6)return s.ct!==undefined?"ct":"hs";return"hi"}
@@ -617,7 +623,7 @@ h+='<h2 style="margin-top:0">BU DURAKTAN GEÇEN HATLAR</h2>';
 d.sira.forEach(function(k){var l=d.hatlar[k];
 h+='<a class="card" href="#'+r.id+'/'+d.id+'/'+encodeURIComponent(k)+'"><div class="row"><div class="badge cond">'+esc(l.no)+'</div><p class="route">'+l.guzergah.split(" > ").map(esc).join(" → ")+'</p></div><div class="go">'+(l.saatler?"Hareket saatleri ›":"Güzergâh ›")+'</div></a>'});
 if(d.not)h+='<div class="note">'+esc(d.not)+'</div>';
-return h}
+return h+hata(d.ad,"")}
 function hat(r,d,l){
 var keys=keysOf(l),tk=todayKey(l);
 if(!tab||keys.indexOf(tab)<0)tab=tk;
@@ -638,7 +644,7 @@ h+='</div><div class="note">Hareket saatleri, ilk duraktan kalkış saatini gös
 [tab,"hepsi"].forEach(function(k){if(l.notlar&&l.notlar[k])h+='<div class="note">'+esc(l.notlar[k])+'</div>'});
 h+='<h2>GÜZERGÂH</h2><ol class="stops">';
 stops.forEach(function(s){var here=s===l.yer;h+='<li'+(here?' class="here"':'')+'>'+esc(s)+(here?'<small>Bu durak</small>':'')+'</li>'});
-return h+'</ol>'}
+return h+'</ol>'+hata(d.ad,l.no)}
 function render(){
 var p=location.hash.replace(/^#\/?/,"").split("/").map(function(x){try{return decodeURIComponent(x)}catch(e){return x}}).filter(Boolean);
 var r=null,d=null,l=null,h,title="Ulaşım Rehberi";
