@@ -1234,7 +1234,7 @@ VERI.bolgeler.forEach(function(r){h+='<a class="card" href="#'+r.id+'"><div clas
 return h+gelismeler()}
 function bolge(r){
 var h=ust({href:"#",text:"Tüm bölgeler"},"BÖLGE",r.ad)+'<h2 style="margin-top:0">DURAKLAR</h2>';
-r.duraklar.forEach(function(d){
+r.duraklar.slice().sort(function(a,b){return a.ad.localeCompare(b.ad,"tr",{numeric:true,sensitivity:"base"})}).forEach(function(d){
 h+='<a class="card" href="#'+r.id+'/'+d.id+'"><div class="nm">'+esc(d.ad)+'</div><div class="mbs">'+d.sira.map(function(k){return'<span class="mb cond">'+esc(d.hatlar[k].no)+'</span>'}).join("")+'</div></a>'});
 return h}
 function durak(r,d){
