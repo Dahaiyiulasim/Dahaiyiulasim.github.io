@@ -1347,6 +1347,7 @@ var VERI={bolgeler:[
 // Sıralamayı düşünme: site tarihe göre en yeniyi üste koyar. Son 14 gündekilerde "YENİ" rozeti çıkar.
 // tur: genel (yeşil: bölge, hat, haber), iyilestirme (sarı: kullanımı kolaylaştıran yenilikler), duzeltme (kırmızı: hata düzeltmeleri). Yazılmazsa genel olur.
 var GELISMELER=[
+  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Hatlar bölümü eklendi", metin:"Ana sayfadaki Hatlar kartına dokunarak kayıtlı tüm hatları numara sırasıyla ve güzergâhlarıyla görebilirsiniz. Bir hatta dokunarak hareket saatlerine ulaşabilirsiniz."},
   {tarih:"2026-10-12", tur:"iyilestirme", baslik:"Favoriler ve kalan süre eklendi", metin:"Durak ve hatlarınızı favorilere ekleyerek ana sayfadan hızlıca ulaşabilirsiniz. Hat sayfasında sıradaki seferin ilk duraktan kalkışına kalan süre de artık görünüyor."},
   {tarih:"2026-10-12", tur:"iyilestirme", baslik:"Arama özelliği eklendi", metin:"Ana sayfadaki arama kutusu ile hat numarasına, durak adına veya güzergâhtaki bir yere göre hızlıca arama yapabilirsiniz."},
   {tarih:"2026-10-11", tur:"genel", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi yayında", metin:"Bölgedeki 23 durağın hat güzergâhları ve hareket saatleri sitede."},
@@ -1449,11 +1450,22 @@ return'<a class="card" href="'+esc(h)+'"><div class="row"><div class="badge cond
 return'<a class="card" href="'+esc(h)+'"><div class="nm">'+esc(d.ad)+'</div><div class="mbs">'+d.sira.map(function(k){return'<span class="mb cond">'+esc(d.hatlar[k].no)+'</span>'}).join("")+'</div></a>'}
 function favoriler(){var h="";favYukle().forEach(function(x){h+=favKart(x)});return h?'<h2 style="margin-top:0">FAVORİLERİM</h2>'+h:""}
 function kalanYaz(m){if(m<=0)return["Şimdi","kalkıyor"];var s=Math.floor(m/60),d=m%60;return[((s?s+" sa ":"")+(d||!s?d+" dk":"")).trim(),"kalkışa kalan"]}
+function hatlar(){
+var n=katalog()&&CATK.length;
+if(!n)return"";
+return'<a class="card" href="#hatlar"><div class="nm">Hatlar</div><div class="go">'+n+' Hat ›</div></a>'}
+function hatlarSayfa(){
+var cat=katalog(),k=CATK.slice().sort(dsirala);
+var h=ust({href:"#",text:"Ana sayfa"},k.length+" HAT","Hatlar");
+if(!k.length)return h+'<div class="note" style="margin-top:0">Kayıtlı hat yok.</div>';
+k.forEach(function(no){var e=cat[no],a=e.v[0].g.split(" > "),y=e.v[0].l;
+h+='<a class="card" href="#hat/'+encodeURIComponent(no)+'/0"><div class="row"><div class="badge cond">'+esc(no)+'</div><div><p class="route">'+esc(a[0])+(e.v.length>1?' ⇄ ':' → ')+esc(a[a.length-1])+'</p><div class="srsub">'+(y.saatler?"Güzergâh ve hareket saatleri":"Güzergâh")+' ›</div></div></div></a>'});
+return h}
 function home(){
 var h=ust(null,"","Bölgeler")+'<input id="ara" class="ara" type="search" placeholder="Hat, durak ya da yer ara…" aria-label="Hat veya durak ara" autocomplete="off" autocapitalize="off" enterkeyhint="search" value="'+esc(q)+'"><div id="sonuc"></div><div id="ana">';
 var fv=favoriler();h+=fv+'<h2'+(fv?'':' style="margin-top:0"')+'>BÖLGE SEÇİN</h2>';
 VERI.bolgeler.forEach(function(r){h+='<a class="card" href="#'+r.id+'"><div class="nm">'+esc(r.ad)+'</div><div class="go">'+r.duraklar.length+' durak ›</div></a>'});
-return h+gelismeler()+'</div>'}
+return h+hatlar()+gelismeler()+'</div>'}
 function aramaGuncelle(){var so=document.getElementById("sonuc"),an=document.getElementById("ana");if(!so||!an)return;var r=ara(q);so.innerHTML=r;an.style.display=r?"none":""}
 function bolge(r){
 var h=ust({href:"#",text:"Tüm bölgeler"},"BÖLGE",r.ad)+'<h2 style="margin-top:0">DURAKLAR</h2>';
@@ -1504,6 +1516,7 @@ if(kv){var gi=Math.min(Math.max(parseInt(p[2],10)||0,0),kv.v.length-1),kl=kv.v[g
 else if(l){h=hat(r,d,l,false,"#"+r.id+"/"+d.id+"/"+encodeURIComponent(p[2]));title=l.no+" – "+d.ad}
 else if(d){tab=null;h=durak(r,d);title=d.ad+" – Ulaşım Rehberi"}
 else if(r){tab=null;h=bolge(r);title=r.ad+" – Ulaşım Rehberi"}
+else if(p[0]==="hatlar"&&!p[1]){tab=null;h=hatlarSayfa();title="Hatlar – Ulaşım Rehberi"}
 else{tab=null;h=home()}
 app.innerHTML=h;document.title=title;window.scrollTo(0,0);
 Array.prototype.forEach.call(app.querySelectorAll(".tabs button"),function(b){b.onclick=function(){tab=b.getAttribute("data-t");render()}});
