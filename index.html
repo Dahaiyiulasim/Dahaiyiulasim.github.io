@@ -35,6 +35,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Barlow','Helvet
 .cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700}
 .top{background:#0E5A2B;color:#fff;padding:28px 20px 24px;margin:0 -16px 20px}
 .top .k{font-size:14px;letter-spacing:3px;color:#CFE8D5;font-weight:500}
+.top .rota{margin-top:12px;font-size:15px;line-height:1.5;color:#CFE8D5}
 .top h1{margin:2px 0 0;font-size:44px;line-height:1.05}
 .top .t{font-size:24px;letter-spacing:6px;color:#7DEB91;line-height:1.1}
 .top .ts{font-size:14px;letter-spacing:3px;color:#CFE8D5;font-weight:500;margin-bottom:14px}
@@ -1444,6 +1445,7 @@ var VERI={bolgeler:[
 // tur: genel (yeşil: bölge, hat, haber), iyilestirme (sarı: kullanımı kolaylaştıran yenilikler), duzeltme (kırmızı: hata düzeltmeleri). Yazılmazsa genel olur.
 // Sıralama: yeniden eskiye. Aynı gün eklenenlerde en yeni olan en üste yazılır.
 var GELISMELER=[
+  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Hat sayfasında tam güzergâh", metin:"Hatlar bölümünden açılan hat sayfasının üstünde artık hattın tam güzergâhı görünüyor."},
   {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Ana ekrana eklenebiliyor", metin:"Siteyi telefonunuzun ana ekranına ekleyerek uygulama gibi tek dokunuşla açabilirsiniz. Ana sayfadaki ipucu nasıl yapılacağını gösterir."},
   {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Resmî tatillerde tatil tarifesi", metin:"Bayram ve resmî tatil günlerinde site artık otomatik olarak Pazar ve tatil günleri tarifesini gösteriyor. Hat sayfasında bunu belirten bir uyarı da çıkıyor."},
   {tarih:"2026-10-13", tur:"genel", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi tamamlandı! — 51 durak", metin:"Bölgedeki tüm durakların hat güzergâhları ve hareket saatleri artık sitede. Bu, projenin ilk bölgesinin tamamlandığı an. Sırada komşu mahalleler var."},
@@ -1616,7 +1618,7 @@ var now=new Date(),nm=now.getHours()*60+now.getMinutes();if(nm<330)nm+=1440;
 var isToday=tab===tk&&times.length>0,nxt=-1,i;
 if(isToday){for(i=0;i<times.length;i++){if(mins(times[i])>=nm){nxt=i;break}}}
 var stops=l.guzergah.split(" > ");
-var h='<div class="top"><div class="trow"><a class="back" href="'+(kat?'#':'#'+r.id+'/'+d.id)+'">‹ '+esc(kat?'Ana sayfa':d.ad)+'</a>'+favBtn(fh)+'</div><div style="display:flex;gap:14px;align-items:center"><div class="badge cond">'+esc(l.no)+'</div><div class="cond" style="font-size:26px;line-height:1.1">'+esc(stops[0])+' – '+esc(stops[stops.length-1])+'</div></div></div>';
+var h='<div class="top"><div class="trow"><a class="back" href="'+(kat?'#':'#'+r.id+'/'+d.id)+'">‹ '+esc(kat?'Ana sayfa':d.ad)+'</a>'+favBtn(fh)+'</div><div style="display:flex;gap:14px;align-items:center"><div class="badge cond">'+esc(l.no)+'</div><div class="cond" style="font-size:26px;line-height:1.1">'+esc(stops[0])+' – '+esc(stops[stops.length-1])+'</div></div>'+(kat?'<div class="rota">'+stops.map(esc).join(" › ")+'</div>':"")+'</div>';
 var yb0=yonBtn(l,kat);h+=yb0;var tt0=bugunTatil();if(tt0&&l.saatler&&tk!=="her")h+='<div class="note"'+(yb0?"":' style="margin-top:0"')+'>Bugün '+esc(tt0)+' (resmî tatil): Pazar ve tatil günleri tarifesi uygulanır.</div>';
 if(!l.saatler){if(l.siklik)h+='<div class="note" style="margin-top:0">Sefer sıklığı: '+esc(l.siklik)+'.</div>'}
 else if(keys.length<2)h+='<h2 style="margin-top:0">HER GÜN</h2>';
