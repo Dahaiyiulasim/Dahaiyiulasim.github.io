@@ -33,7 +33,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Barlow','Helvetica Neue',Arial,sans-serif;font-size:17px;line-height:1.4}
 .wrap{max-width:560px;margin:0 auto;padding:0 16px 40px}
 .cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700}
-.top{background:#0E5A2B;color:#fff;padding:28px 20px 24px;margin:0 -16px 20px}
+.top{position:relative;background:#0E5A2B;color:#fff;padding:28px 20px 24px;margin:0 -16px 20px}
 .top .k{font-size:14px;letter-spacing:3px;color:#CFE8D5;font-weight:500}
 .top .rota{margin-top:12px;font-size:15px;line-height:1.5;color:#CFE8D5}
 .top h1{margin:2px 0 0;font-size:44px;line-height:1.05}
@@ -105,10 +105,27 @@ ol.stops li.here{font-weight:600}
 .ipucu b{display:block;font-size:16px;margin-bottom:2px}
 .ipucuk{position:absolute;top:2px;right:2px;width:44px;height:44px;border:0;background:transparent;color:var(--muted);font-size:20px;cursor:pointer}
 .mb{display:inline-flex;min-width:38px;height:30px;padding:0 8px;border-radius:7px;background:var(--bright);color:var(--onbright);font-size:19px;align-items:center;justify-content:center}
+.gear{position:absolute;top:16px;right:10px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:#fff;border-radius:12px;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.gear:active{background:rgba(255,255,255,.18)}
+.gear svg{width:26px;height:26px}
+.set{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px}
+.set>b{display:block;font-size:18px;font-weight:600}
+.set>small{display:block;color:var(--muted);font-size:14px;margin-top:8px}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.setrow b{display:block;font-size:18px;font-weight:600}
+.setrow small{display:block;color:var(--muted);font-size:14px}
+.sw{flex:none;position:relative;width:60px;height:36px;border:0;border-radius:18px;background:var(--line);cursor:pointer;padding:0}
+.sw:after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .18s}
+.sw[aria-checked="true"]{background:var(--brand)}
+.sw[aria-checked="true"]:after{transform:translateX(24px)}
+.seg{display:flex;background:var(--soft);border-radius:12px;padding:4px;margin-top:12px}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);font:600 16px 'Barlow',Arial,sans-serif;padding:11px 8px;border-radius:9px;cursor:pointer;min-height:44px}
+.seg button[aria-selected="true"]{background:var(--card);color:var(--ink)}
 </style>
+<script>try{var _t=localStorage.getItem("ulasim_tema");if(_t==="dark"||_t==="light")document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 </head>
 <body>
-<div class="wrap" id="app"><noscript>Bu sayfa için JavaScript gerekir.</noscript></div>
+<div class="wrap" id="app"><noscript>Bu sayfa için JavaScript gerekir. / JavaScript is required.</noscript></div>
 <script>
 // ===== VERİ BÖLÜMÜ: saatleri ve güzergâhları buradan değiştirebilirsin =====
 // Kurallar: tırnakları (") ve virgülleri silme. Saatler arası tek boşluk bırak.
@@ -1444,68 +1461,157 @@ var VERI={bolgeler:[
 // Sıralamayı düşünme: site tarihe göre en yeniyi üste koyar. Son 14 gündekilerde "YENİ" rozeti çıkar.
 // tur: genel (yeşil: bölge, hat, haber), iyilestirme (sarı: kullanımı kolaylaştıran yenilikler), duzeltme (kırmızı: hata düzeltmeleri). Yazılmazsa genel olur.
 // Sıralama: yeniden eskiye. Aynı gün eklenenlerde en yeni olan en üste yazılır.
+// Yeni madde eklerken İngilizce için baslik_en ve metin_en alanlarını da yaz (yoksa Türkçesi görünür).
 var GELISMELER=[
-  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Hat sayfasında tam güzergâh", metin:"Hatlar bölümünden açılan hat sayfasının üstünde artık hattın tam güzergâhı görünüyor."},
-  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Ana ekrana eklenebiliyor", metin:"Siteyi telefonunuzun ana ekranına ekleyerek uygulama gibi tek dokunuşla açabilirsiniz. Ana sayfadaki ipucu nasıl yapılacağını gösterir."},
-  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Resmî tatillerde tatil tarifesi", metin:"Bayram ve resmî tatil günlerinde site artık otomatik olarak Pazar ve tatil günleri tarifesini gösteriyor. Hat sayfasında bunu belirten bir uyarı da çıkıyor."},
-  {tarih:"2026-10-13", tur:"genel", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi tamamlandı! — 51 durak", metin:"Bölgedeki tüm durakların hat güzergâhları ve hareket saatleri artık sitede. Bu, projenin ilk bölgesinin tamamlandığı an. Sırada komşu mahalleler var."},
-  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Hatlar bölümü eklendi", metin:"Ana sayfadaki Hatlar kartına dokunarak kayıtlı tüm hatları numara sırasıyla ve güzergâhlarıyla görebilirsiniz. Bir hatta dokunarak hareket saatlerine ulaşabilirsiniz."},
-  {tarih:"2026-10-12", tur:"iyilestirme", baslik:"Favoriler ve kalan süre eklendi", metin:"Durak ve hatlarınızı favorilere ekleyerek ana sayfadan hızlıca ulaşabilirsiniz. Hat sayfasında sıradaki seferin ilk duraktan kalkışına kalan süre de artık görünüyor."},
-  {tarih:"2026-10-12", tur:"iyilestirme", baslik:"Arama özelliği eklendi", metin:"Ana sayfadaki arama kutusu ile hat numarasına, durak adına veya güzergâhtaki bir yere göre hızlıca arama yapabilirsiniz."},
-  {tarih:"2026-10-11", tur:"genel", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi yayında", metin:"Bölgedeki 23 durağın hat güzergâhları ve hareket saatleri sitede."},
-  {tarih:"2026-10-11", tur:"iyilestirme", baslik:"Hata bildir düğmesi eklendi", metin:"Her durak ve hat sayfasının altından yanlış ya da eksik bilgiyi bize iletebilirsin."},
-  {tarih:"2026-10-11", tur:"iyilestirme", baslik:"Gelişmeler bölümü açıldı", metin:"Sitedeki yenilikler ve tarihleri burada görünecek."}
+  {tarih:"2026-10-14", tur:"iyilestirme", baslik:"Ayarlar, koyu mod ve İngilizce eklendi", baslik_en:"Settings, dark mode and English added", metin:"Ana sayfanın sağ üstündeki çark simgesinden ayarları açabilir, koyu modu etkinleştirebilir ve dili Türkçe ya da İngilizce olarak değiştirebilirsiniz. Bölge ve durak adları çevrilmez.", metin_en:"Open settings from the gear icon at the top right of the home page to turn on dark mode and switch the language between Turkish and English. Region and stop names are not translated."},
+  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Hat sayfasında tam güzergâh", baslik_en:"Full route on the line page", metin:"Hatlar bölümünden açılan hat sayfasının üstünde artık hattın tam güzergâhı görünüyor.", metin_en:"The full route of a line now appears at the top of the line page opened from the Lines section."},
+  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Ana ekrana eklenebiliyor", baslik_en:"Can be added to the home screen", metin:"Siteyi telefonunuzun ana ekranına ekleyerek uygulama gibi tek dokunuşla açabilirsiniz. Ana sayfadaki ipucu nasıl yapılacağını gösterir.", metin_en:"You can add the site to your phone's home screen and open it with one tap like an app. The tip on the home page shows how."},
+  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Resmî tatillerde tatil tarifesi", baslik_en:"Holiday timetable on public holidays", metin:"Bayram ve resmî tatil günlerinde site artık otomatik olarak Pazar ve tatil günleri tarifesini gösteriyor. Hat sayfasında bunu belirten bir uyarı da çıkıyor.", metin_en:"On public holidays, the site now automatically shows the Sunday and holiday timetable. A notice on the line page also says so."},
+  {tarih:"2026-10-13", tur:"genel", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi tamamlandı! — 51 durak", baslik_en:"Dünya Bankası region completed! — 51 stops", metin:"Bölgedeki tüm durakların hat güzergâhları ve hareket saatleri artık sitede. Bu, projenin ilk bölgesinin tamamlandığı an. Sırada komşu mahalleler var.", metin_en:"Line routes and departure times for all stops in the region are now on the site. This marks the completion of the project's first region. Neighboring districts are next."},
+  {tarih:"2026-10-13", tur:"iyilestirme", baslik:"Hatlar bölümü eklendi", baslik_en:"Lines section added", metin:"Ana sayfadaki Hatlar kartına dokunarak kayıtlı tüm hatları numara sırasıyla ve güzergâhlarıyla görebilirsiniz. Bir hatta dokunarak hareket saatlerine ulaşabilirsiniz.", metin_en:"Tap the Lines card on the home page to see all registered lines in number order with their routes. Tap a line to reach its departure times."},
+  {tarih:"2026-10-12", tur:"iyilestirme", baslik:"Favoriler ve kalan süre eklendi", baslik_en:"Favorites and time remaining added", metin:"Durak ve hatlarınızı favorilere ekleyerek ana sayfadan hızlıca ulaşabilirsiniz. Hat sayfasında sıradaki seferin ilk duraktan kalkışına kalan süre de artık görünüyor.", metin_en:"Add stops and lines to your favorites for quick access from the home page. The line page now also shows the time left until the next trip departs from the first stop."},
+  {tarih:"2026-10-12", tur:"iyilestirme", baslik:"Arama özelliği eklendi", baslik_en:"Search added", metin:"Ana sayfadaki arama kutusu ile hat numarasına, durak adına veya güzergâhtaki bir yere göre hızlıca arama yapabilirsiniz.", metin_en:"Use the search box on the home page to search quickly by line number, stop name or a place along a route."},
+  {tarih:"2026-10-11", tur:"genel", bolge:"Dünya Bankası", baslik:"Dünya Bankası bölgesi yayında", baslik_en:"Dünya Bankası region is live", metin:"Bölgedeki 23 durağın hat güzergâhları ve hareket saatleri sitede.", metin_en:"Line routes and departure times for the 23 stops in the region are on the site."},
+  {tarih:"2026-10-11", tur:"iyilestirme", baslik:"Hata bildir düğmesi eklendi", baslik_en:"Report error button added", metin:"Her durak ve hat sayfasının altından yanlış ya da eksik bilgiyi bize iletebilirsin.", metin_en:"You can report wrong or missing information from the bottom of every stop and line page."},
+  {tarih:"2026-10-11", tur:"iyilestirme", baslik:"Gelişmeler bölümü açıldı", baslik_en:"Updates section opened", metin:"Sitedeki yenilikler ve tarihleri burada görünecek.", metin_en:"Site updates and their dates will appear here."}
 ];
 // ===== RESMÎ TATİLLER =====
 // Bu günlerde sitede otomatik olarak Pazar ve tatil günleri tarifesi (pz, yoksa hs) gösterilir.
-// tarih: YYYY-AA-GG. ad: hat sayfasındaki uyarıda görünür. Her tatil gününü ayrı satır yaz.
+// tarih: YYYY-AA-GG. ad: hat sayfasındaki uyarıda görünür. ad_en: İngilizce adı. Her tatil gününü ayrı satır yaz.
 // Yarım gün arifeleri ve idari izin günleri eklenmez. Yeni yıl için bu listeye ekleme yapmak yeterli.
 var TATILLER=[
-  {tarih:"2026-10-29", ad:"Cumhuriyet Bayramı"},
-  {tarih:"2027-01-01", ad:"Yılbaşı"},
-  {tarih:"2027-03-09", ad:"Ramazan Bayramı"},
-  {tarih:"2027-03-10", ad:"Ramazan Bayramı"},
-  {tarih:"2027-03-11", ad:"Ramazan Bayramı"},
-  {tarih:"2027-04-23", ad:"Ulusal Egemenlik ve Çocuk Bayramı"},
-  {tarih:"2027-05-16", ad:"Kurban Bayramı"},
-  {tarih:"2027-05-17", ad:"Kurban Bayramı"},
-  {tarih:"2027-05-18", ad:"Kurban Bayramı"},
-  {tarih:"2027-05-19", ad:"Kurban Bayramı"},
-  {tarih:"2027-07-15", ad:"Demokrasi ve Millî Birlik Günü"},
-  {tarih:"2027-08-30", ad:"Zafer Bayramı"},
-  {tarih:"2027-10-29", ad:"Cumhuriyet Bayramı"}
+  {tarih:"2026-10-29", ad:"Cumhuriyet Bayramı", ad_en:"Republic Day"},
+  {tarih:"2027-01-01", ad:"Yılbaşı", ad_en:"New Year's Day"},
+  {tarih:"2027-03-09", ad:"Ramazan Bayramı", ad_en:"Ramadan Feast"},
+  {tarih:"2027-03-10", ad:"Ramazan Bayramı", ad_en:"Ramadan Feast"},
+  {tarih:"2027-03-11", ad:"Ramazan Bayramı", ad_en:"Ramadan Feast"},
+  {tarih:"2027-04-23", ad:"Ulusal Egemenlik ve Çocuk Bayramı", ad_en:"National Sovereignty and Children's Day"},
+  {tarih:"2027-05-16", ad:"Kurban Bayramı", ad_en:"Feast of the Sacrifice"},
+  {tarih:"2027-05-17", ad:"Kurban Bayramı", ad_en:"Feast of the Sacrifice"},
+  {tarih:"2027-05-18", ad:"Kurban Bayramı", ad_en:"Feast of the Sacrifice"},
+  {tarih:"2027-05-19", ad:"Kurban Bayramı", ad_en:"Feast of the Sacrifice"},
+  {tarih:"2027-07-15", ad:"Demokrasi ve Millî Birlik Günü", ad_en:"Democracy and National Unity Day"},
+  {tarih:"2027-08-30", ad:"Zafer Bayramı", ad_en:"Victory Day"},
+  {tarih:"2027-10-29", ad:"Cumhuriyet Bayramı", ad_en:"Republic Day"}
 ];
 // Hata bildirme formu (Google Form, önceden doldurulmuş bağlantı). Alan kodları: durak, hat, sayfa adresi.
 var HATA_FORMU="https://docs.google.com/forms/d/e/1FAIpQLSerQuPDQmtpUgdGSDv5t7Acz3R5Rs48MfegSD5TOlm3ZzTMJA/viewform?usp=pp_url";
 var HATA_ALANLARI={durak:"entry.1822978357",hat:"entry.831245240",sayfa:"entry.1292525955"};
+// ===== İNGİLİZCE ÇEVİRİ: durak/hat notları =====
+// Anahtar, veride yazan Türkçe notun BİREBİR aynısıdır. Karşılığı İngilizcesidir.
+// Yeni bir not eklediysen buraya da ekle; eklemezsen İngilizce modda Türkçesi görünür.
+var CEVIRI_EN={
+  "145 nolu hat, tramvaydan sonra tamamlayıcı aktarma desteklemektedir.":"Line 145 supports complementary transfer after the tram.",
+  "Renkli saatlerde 08.00'e kadar 24 ve 134 hatları ile sanayi otobüsleri geçmektedir.":"At the colored times, lines 24 and 134 and industrial shuttle buses also pass until 08:00.",
+  "145 nolu hat, tramvaydan sonra tamamlayıcı aktarma desteklemektedir. Renkli saatlerde 08.00'e kadar 24 ve 134 hatları ile sanayi otobüsleri geçmektedir.":"Line 145 supports complementary transfer after the tram. At the colored times, lines 24 and 134 and industrial shuttle buses also pass until 08:00.",
+  "* Bu seferler Şehit Öğretmen Ergin Komut Mesleki ve Teknik Anadolu Lisesine gider.":"* These trips go to Şehit Öğretmen Ergin Komut Vocational and Technical Anatolian High School.",
+  "* Kırmızı saatlerdeki seferler 29 Ekim Ortaokulu'na gider.":"* Trips at the red times go to 29 Ekim Middle School.",
+  "* Kırmızı saatlerdeki seferler Bayındırlık Su Deposundan kalkar.":"* Trips at the red times depart from Bayındırlık Su Deposu.",
+  "* Kırmızı saatlerdeki seferler Şehit Esma Kız Öğrenci Yurdu'na girmez.":"* Trips at the red times do not enter Şehit Esma Girls' Dormitory.",
+  "* Renkli saatte Bulvar güzergâhını kullanır.":"* At the colored time, it uses the Bulvar route.",
+  "07:00 seferi Dünya Bankası Su Deposundan kalkar.":"The 07:00 trip departs from Dünya Bankası Su Deposu.",
+  "Resmi tatillerde pazar günü saatleriyle çalışır.":"Runs on the Sunday timetable on public holidays.",
+  "Kırmızı saatlerde 134 koduyla Dünya Bankası'ndan kalkar.":"At the red times, departs from Dünya Bankası under code 134.",
+  "Pembe saatlerde Bayındırlık Son Durak'tan kalkar.":"At the pink times, departs from Bayındırlık Son Durak.",
+  "Pembe saatlerde Bayındırlık'tan kalkar.":"At the pink times, departs from Bayındırlık.",
+  "Yeşil saatlerde Dünya Bankası'ndan kalkar.":"At the green times, departs from Dünya Bankası.",
+  "Yeşil saatlerde belediye otobüsü hizmet vermektedir.":"At the green times, a municipal bus operates."
+};
 // ===== VERİ BÖLÜMÜ SONU =====
 
 // ===== MOTOR (buradan aşağısına dokunma) =====
+var DIL="tr";try{if(localStorage.getItem("ulasim_dil")==="en")DIL="en"}catch(e){}
+var EN_UI={
+  "Hafta İçi":"Weekdays",
+  "Hafta Sonu":"Weekend",
+  "Cumartesi":"Saturday",
+  "Pazar":"Sunday",
+  "Her Gün":"Every day",
+  "Genel":"General",
+  "İyileştirme":"Improvement",
+  "Düzeltme":"Fix",
+  "YENİ":"NEW",
+  "GELİŞMELER":"UPDATES",
+  "Daha az göster":"Show less",
+  "Tümünü göster":"Show all",
+  "Hata bildir":"Report an error",
+  "ULAŞIM REHBERİ":"TRANSIT GUIDE",
+  "Yön Değiştir":"Reverse direction",
+  "Sonuç bulunamadı. Hat numarasını, durak adını ya da bir yer adını deneyin.":"No results found. Try a line number, a stop name or a place name.",
+  "DURAKLAR":"STOPS",
+  "HATLAR":"LINES",
+  "Hareket saatleri ›":"Departure times ›",
+  "Güzergâh ›":"Route ›",
+  "★ Favoride":"★ Favorited",
+  "☆ Favori":"☆ Favorite",
+  "Şimdi":"Now",
+  "kalkıyor":"departing",
+  "sa":"h",
+  "dk":"min",
+  "kalkışa kalan":"until departure",
+  "Hatlar":"Lines",
+  "Hat ›":"lines ›",
+  "Ana sayfa":"Home",
+  "HAT":"LINES",
+  "Kayıtlı hat yok.":"No lines registered.",
+  "Güzergâh ve hareket saatleri":"Route and departure times",
+  "Ana ekrana ekle":"Add to Home Screen",
+  "Kapat":"Close",
+  "Bölgeler":"Regions",
+  "Hat, durak ya da yer ara…":"Search line, stop or place…",
+  "Hat veya durak ara":"Search lines or stops",
+  "BÖLGE SEÇİN":"SELECT A REGION",
+  "FAVORİLERİM":"MY FAVORITES",
+  "durak ›":"stops ›",
+  "Tüm bölgeler":"All regions",
+  "BÖLGE":"REGION",
+  "DURAK ADI":"STOP NAME",
+  "Karşı durak":"Opposite stop",
+  "BU DURAKTAN GEÇEN HATLAR":"LINES SERVING THIS STOP",
+  "Sefer sıklığı":"Service frequency",
+  "HER GÜN":"EVERY DAY",
+  "Sıradaki sefer":"Next departure",
+  "Bugünkü seferler bitti":"No more departures today",
+  "Hareket saatleri, ilk duraktan kalkış saatini gösterir.":"Times shown are departure times from the first stop.",
+  "Bu günde sefer yoktur.":"No service on this day.",
+  "GÜZERGÂH":"ROUTE",
+  "Bu durak":"This stop",
+  "Ayarlar":"Settings",
+  "Koyu mod":"Dark mode",
+  "Ekranı koyu renklerle göster":"Use a dark color scheme",
+  "Bölge ve durak adları çevrilmez.":"Region and stop names are not translated."
+};
+var AYLAR_EN=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function tx(s){if(DIL!=="en"||s===undefined||s===null)return s;var v=EN_UI[s];if(v===undefined&&typeof CEVIRI_EN!=="undefined")v=CEVIRI_EN[s];return v===undefined?s:v}
+function gv(x,k){return DIL==="en"&&x[k+"_en"]?x[k+"_en"]:x[k]}
+function dilDegistir(d){DIL=d==="en"?"en":"tr";try{localStorage.setItem("ulasim_dil",DIL)}catch(e){}}
+function karanlikMi(){var v=null;try{v=localStorage.getItem("ulasim_tema")}catch(e){}if(v==="dark")return true;if(v==="light")return false;return!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
+function temaDegistir(){var n=karanlikMi()?"light":"dark";try{localStorage.setItem("ulasim_tema",n)}catch(e){}document.documentElement.setAttribute("data-theme",n)}
 var LAB={hi:"Hafta İçi",hs:"Hafta Sonu",ct:"Cumartesi",pz:"Pazar",her:"Her Gün"};
 var app=document.getElementById("app"),tab=null,prev="",cur=location.hash;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function L(x){return x?String(x).split(" "):[]}
 var SYM={k:"*",p:"†",y:"‡"},gelAcik=false,AYLAR=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
 var TUR={genel:{ad:"Genel",c:"tg"},iyilestirme:{ad:"İyileştirme",c:"ti"},duzeltme:{ad:"Düzeltme",c:"td"}};
-function tarihYaz(t){var p=t.split("-");return +p[2]+" "+AYLAR[+p[1]-1]+" "+p[0]}
+function tarihYaz(t){var p=t.split("-");return +p[2]+" "+(DIL==="en"?AYLAR_EN:AYLAR)[+p[1]-1]+" "+p[0]}
 function gelismeler(){
 var g=(typeof GELISMELER!=="undefined"?GELISMELER:[]).slice().sort(function(a,b){return a.tarih<b.tarih?1:(a.tarih>b.tarih?-1:0)});
 if(!g.length)return"";
-var lim=gelAcik?g.length:5,now=Date.now(),h='<h2>GELİŞMELER</h2>';
+var lim=gelAcik?g.length:5,now=Date.now(),h='<h2>'+tx("GELİŞMELER")+'</h2>';
 g.slice(0,lim).forEach(function(x){var yeni=now-new Date(x.tarih+"T00:00:00").getTime()<14*864e5;
-var tr=TUR[x.tur]||TUR.genel;h+='<div class="gel '+tr.c+'"><div class="geltarih">'+tarihYaz(x.tarih)+(x.bolge?" · "+esc(x.bolge):"")+'<span class="gtur">'+tr.ad+'</span>'+(yeni?'<span class="yeni">YENİ</span>':"")+'</div><div class="gelbaslik">'+esc(x.baslik)+'</div><div class="gelmetin">'+esc(x.metin)+'</div></div>'});
-if(g.length>5)h+='<button class="gelbtn">'+(gelAcik?"Daha az göster":"Tümünü göster ("+g.length+")")+'</button>';
+var tr=TUR[x.tur]||TUR.genel;h+='<div class="gel '+tr.c+'"><div class="geltarih">'+tarihYaz(x.tarih)+(x.bolge?" · "+esc(x.bolge):"")+'<span class="gtur">'+tx(tr.ad)+'</span>'+(yeni?'<span class="yeni">'+tx("YENİ")+'</span>':"")+'</div><div class="gelbaslik">'+esc(gv(x,"baslik"))+'</div><div class="gelmetin">'+esc(gv(x,"metin"))+'</div></div>'});
+if(g.length>5)h+='<button class="gelbtn">'+(gelAcik?tx("Daha az göster"):tx("Tümünü göster")+" ("+g.length+")")+'</button>';
 return h}
-function bugunTatil(){var d=new Date(Date.now()-198e5),t=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2),l=typeof TATILLER!=="undefined"?TATILLER:[],i;for(i=0;i<l.length;i++)if(l[i].tarih===t)return l[i].ad;return""}
+function bugunTatil(){var d=new Date(Date.now()-198e5),t=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2),l=typeof TATILLER!=="undefined"?TATILLER:[],i;for(i=0;i<l.length;i++)if(l[i].tarih===t)return(DIL==="en"&&l[i].ad_en)?l[i].ad_en:l[i].ad;return""}
 function mins(t){var p=t.slice(0,5).split(":"),m=+p[0]*60+ +p[1];return m<330?m+1440:m}
 function hata(durak,hat){var u=HATA_FORMU+"&"+HATA_ALANLARI.durak+"="+encodeURIComponent(durak)+"&"+HATA_ALANLARI.hat+"="+encodeURIComponent(hat||"")+"&"+HATA_ALANLARI.sayfa+"="+encodeURIComponent(location.href);
-return'<a class="hata" href="'+u+'" target="_blank" rel="noopener">⚠ Hata bildir</a>'}
+return'<a class="hata" href="'+u+'" target="_blank" rel="noopener">⚠ '+tx("Hata bildir")+'</a>'}
 function norm(x){return x&&x!=="#"?x:"#"}
 function keysOf(h){var s=h.saatler;if(!s)return[];if(s.her!==undefined)return["her"];return s.ct!==undefined?["hi","ct","pz"]:["hi","hs"]}
 function todayKey(h){var s=h.saatler||{};if(s.her!==undefined)return"her";if(bugunTatil())return s.pz!==undefined?"pz":"hs";var d=new Date(Date.now()-198e5).getDay();if(d===0)return s.pz!==undefined?"pz":"hs";if(d===6)return s.ct!==undefined?"ct":"hs";return"hi"}
 function ust(back,kicker,title,fh){
 var h='<div class="top">';
-if(back)h+='<div class="trow"><a class="back" href="'+back.href+'">‹ '+esc(back.text)+'</a>'+(fh?favBtn(fh):"")+'</div>';else h+='<div class="t cond">DAAI</div><div class="ts">ULAŞIM REHBERİ</div>';
+if(back)h+='<div class="trow"><a class="back" href="'+back.href+'">‹ '+esc(back.text)+'</a>'+(fh?favBtn(fh):"")+'</div>';else h+='<div class="t cond">DAAI</div><div class="ts">'+tx("ULAŞIM REHBERİ")+'</div><a class="gear" href="#ayarlar" aria-label="'+tx("Ayarlar")+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>';
 if(kicker)h+='<div class="k">'+esc(kicker)+'</div>';
 return h+'<h1 class="cond">'+esc(title)+'</h1></div>'}
 function nz(x){return String(x).toLocaleLowerCase("tr").replace(/ı/g,"i").replace(/ş/g,"s").replace(/ç/g,"c").replace(/ğ/g,"g").replace(/ö/g,"o").replace(/ü/g,"u").replace(/[âä]/g,"a").replace(/[îï]/g,"i").replace(/û/g,"u")}
@@ -1526,7 +1632,7 @@ function yonBtn(l,kat){
 var e=katalog()[l.no];if(!e||e.v.length<2)return"";
 var gi=0;e.v.forEach(function(x,i){if(x.g===l.guzergah)gi=i});
 var j=tersIdx(e,gi),t=e.v[j].g.split(" > ");
-return'<button class="yonbtn" type="button" data-u="#hat/'+encodeURIComponent(l.no)+'/'+j+'" data-r="'+(kat?1:0)+'">⇄ Yön Değiştir<small>'+esc(t[0])+' → '+esc(t[t.length-1])+'</small></button>'}
+return'<button class="yonbtn" type="button" data-u="#hat/'+encodeURIComponent(l.no)+'/'+j+'" data-r="'+(kat?1:0)+'">⇄ '+tx("Yön Değiştir")+'<small>'+esc(t[0])+' → '+esc(t[t.length-1])+'</small></button>'}
 function idxYap(){IDX=[];VERI.bolgeler.forEach(function(r){r.duraklar.forEach(function(d){IDX.push({r:r,d:d,nd:nz(d.ad)})})})}
 function ara(s){
 if(!IDX)idxYap();
@@ -1538,14 +1644,14 @@ IDX.forEach(function(e){if(hepsi(e.nd))ds.push(e)});
 CATK.forEach(function(no){var e=cat[no],n=nz(no);if(hepsi(n+" "+e.rota))hs.push({e:e,sk:n===t[0]?0:(n.indexOf(t[0])===0?1:2)})});
 ds.sort(function(a,b){return dsirala(a.d.ad,b.d.ad)});
 hs.sort(function(a,b){return a.sk-b.sk||dsirala(a.e.no,b.e.no)});
-if(!ds.length&&!hs.length)return'<div class="note" style="margin-top:0">Sonuç bulunamadı. Hat numarasını, durak adını ya da bir yer adını deneyin.</div>';
+if(!ds.length&&!hs.length)return'<div class="note" style="margin-top:0">'+tx("Sonuç bulunamadı. Hat numarasını, durak adını ya da bir yer adını deneyin.")+'</div>';
 var dh="",hh="";
-if(ds.length){dh='<h2>DURAKLAR ('+ds.length+')</h2>';
+if(ds.length){dh='<h2>'+tx("DURAKLAR")+' ('+ds.length+')</h2>';
 ds.slice(0,MAX).forEach(function(e){dh+='<a class="card" href="#'+e.r.id+'/'+e.d.id+'"><div class="nm">'+esc(e.d.ad)+'</div><div class="mbs">'+e.d.sira.map(function(k){return'<span class="mb cond">'+esc(e.d.hatlar[k].no)+'</span>'}).join("")+'</div></a>'});
-if(ds.length>MAX)dh+='<div class="note">İlk '+MAX+' sonuç gösteriliyor. Aramayı daraltın.</div>'}
-if(hs.length){hh='<h2>HATLAR ('+hs.length+')</h2>';
+if(ds.length>MAX)dh+='<div class="note">'+(DIL==="en"?"Showing the first "+MAX+" results. Narrow your search.":"İlk "+MAX+" sonuç gösteriliyor. Aramayı daraltın.")+'</div>'}
+if(hs.length){hh='<h2>'+tx("HATLAR")+' ('+hs.length+')</h2>';
 hs.forEach(function(z){var e=z.e,a=e.v[0].g.split(" > "),y=e.v[0].l;
-hh+='<a class="card" href="#hat/'+encodeURIComponent(e.no)+'/0"><div class="row"><div class="badge cond">'+esc(e.no)+'</div><p class="route">'+esc(a[0])+(e.v.length>1?' ⇄ ':' → ')+esc(a[a.length-1])+'</p></div><div class="go">'+(y.saatler?"Hareket saatleri ›":"Güzergâh ›")+'</div></a>'})}
+hh+='<a class="card" href="#hat/'+encodeURIComponent(e.no)+'/0"><div class="row"><div class="badge cond">'+esc(e.no)+'</div><p class="route">'+esc(a[0])+(e.v.length>1?' ⇄ ':' → ')+esc(a[a.length-1])+'</p></div><div class="go">'+(y.saatler?tx("Hareket saatleri ›"):tx("Güzergâh ›"))+'</div></a>'})}
 var out=(hs.length&&hs[0].sk===0)?hh+dh:dh+hh;
 return out.replace("<h2>",'<h2 style="margin-top:0">')}
 var FAV=null;
@@ -1557,12 +1663,12 @@ function favVar(h){return favYukle().indexOf(h)>-1}
 function favToggle(h){var f=favYukle(),i=f.indexOf(h);if(i>-1)f.splice(i,1);else f.unshift(h);
 try{localStorage.setItem("ulasim_favoriler",JSON.stringify(f))}catch(e){}
 return i<0}
-function favBtn(h){var on=favVar(h);return'<button class="fav" type="button" data-f="'+esc(h)+'" aria-pressed="'+on+'">'+(on?"★ Favoride":"☆ Favori")+'</button>'}
+function favBtn(h){var on=favVar(h);return'<button class="fav" type="button" data-f="'+esc(h)+'" aria-pressed="'+on+'">'+(on?tx("★ Favoride"):tx("☆ Favori"))+'</button>'}
 function favKart(h){
 var p=h.replace(/^#\/?/,"").split("/").map(function(x){try{return decodeURIComponent(x)}catch(e){return x}}).filter(Boolean),a;
 if(p[0]==="hat"){var e=katalog()[p[1]];if(!e)return"";
 var gi=Math.min(Math.max(parseInt(p[2],10)||0,0),e.v.length-1);a=e.v[gi].g.split(" > ");
-return'<a class="card" href="'+esc(h)+'"><div class="row"><div class="badge cond">'+esc(e.no)+'</div><p class="route">'+esc(a[0])+' → '+esc(a[a.length-1])+'</p></div><div class="go">'+(e.v[gi].l.saatler?"Hareket saatleri ›":"Güzergâh ›")+'</div></a>'}
+return'<a class="card" href="'+esc(h)+'"><div class="row"><div class="badge cond">'+esc(e.no)+'</div><p class="route">'+esc(a[0])+' → '+esc(a[a.length-1])+'</p></div><div class="go">'+(e.v[gi].l.saatler?tx("Hareket saatleri ›"):tx("Güzergâh ›"))+'</div></a>'}
 var r=null,d=null;
 VERI.bolgeler.forEach(function(x){if(x.id===p[0])r=x});
 if(r)r.duraklar.forEach(function(x){if(x.id===p[1])d=x});
@@ -1570,18 +1676,18 @@ if(!d)return"";
 if(p[2]){var l=d.hatlar[p[2]];if(!l)return"";a=l.guzergah.split(" > ");
 return'<a class="card" href="'+esc(h)+'"><div class="row"><div class="badge cond">'+esc(l.no)+'</div><div><p class="route">'+esc(d.ad)+'</p><div class="srsub">'+esc(a[0])+' → '+esc(a[a.length-1])+'</div></div></div></a>'}
 return'<a class="card" href="'+esc(h)+'"><div class="nm">'+esc(d.ad)+'</div><div class="mbs">'+d.sira.map(function(k){return'<span class="mb cond">'+esc(d.hatlar[k].no)+'</span>'}).join("")+'</div></a>'}
-function favoriler(){var h="";favYukle().forEach(function(x){h+=favKart(x)});return h?'<h2 style="margin-top:0">FAVORİLERİM</h2>'+h:""}
-function kalanYaz(m){if(m<=0)return["Şimdi","kalkıyor"];var s=Math.floor(m/60),d=m%60;return[((s?s+" sa ":"")+(d||!s?d+" dk":"")).trim(),"kalkışa kalan"]}
+function favoriler(){var h="";favYukle().forEach(function(x){h+=favKart(x)});return h?'<h2 style="margin-top:0">'+tx("FAVORİLERİM")+'</h2>'+h:""}
+function kalanYaz(m){if(m<=0)return[tx("Şimdi"),tx("kalkıyor")];var s=Math.floor(m/60),d=m%60;return[((s?s+" "+tx("sa")+" ":"")+(d||!s?d+" "+tx("dk"):"")).trim(),tx("kalkışa kalan")]}
 function hatlar(){
 var n=katalog()&&CATK.length;
 if(!n)return"";
-return'<a class="card" href="#hatlar"><div class="nm">Hatlar</div><div class="go">'+n+' Hat ›</div></a>'}
+return'<a class="card" href="#hatlar"><div class="nm">'+tx("Hatlar")+'</div><div class="go">'+n+' '+tx("Hat ›")+'</div></a>'}
 function hatlarSayfa(){
 var cat=katalog(),k=CATK.slice().sort(dsirala);
-var h=ust({href:"#",text:"Ana sayfa"},k.length+" HAT","Hatlar");
-if(!k.length)return h+'<div class="note" style="margin-top:0">Kayıtlı hat yok.</div>';
+var h=ust({href:"#",text:tx("Ana sayfa")},k.length+" "+tx("HAT"),tx("Hatlar"));
+if(!k.length)return h+'<div class="note" style="margin-top:0">'+tx("Kayıtlı hat yok.")+'</div>';
 k.forEach(function(no){var e=cat[no],a=e.v[0].g.split(" > "),y=e.v[0].l;
-h+='<a class="card" href="#hat/'+encodeURIComponent(no)+'/0"><div class="row"><div class="badge cond">'+esc(no)+'</div><div><p class="route">'+esc(a[0])+(e.v.length>1?' ⇄ ':' → ')+esc(a[a.length-1])+'</p><div class="srsub">'+(y.saatler?"Güzergâh ve hareket saatleri":"Güzergâh")+' ›</div></div></div></a>'});
+h+='<a class="card" href="#hat/'+encodeURIComponent(no)+'/0"><div class="row"><div class="badge cond">'+esc(no)+'</div><div><p class="route">'+esc(a[0])+(e.v.length>1?' ⇄ ':' → ')+esc(a[a.length-1])+'</p><div class="srsub">'+(y.saatler?tx("Güzergâh ve hareket saatleri"):tx("Güzergâh"))+' ›</div></div></div></a>'});
 return h}
 function ipucu(){
 if(typeof navigator==="undefined")return"";
@@ -1589,26 +1695,26 @@ var ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.tes
 if(!ios&&!/Android/.test(ua))return"";
 if(navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches))return"";
 try{if(localStorage.getItem("ulasim_ipucu")==="1")return""}catch(e){}
-return'<div class="note ipucu"><b>Ana ekrana ekle</b>'+(ios?'Safari\'de Paylaş düğmesine dokun, sonra "Ana Ekrana Ekle"yi seç.':'Tarayıcı menüsünden "Ana ekrana ekle" ya da "Uygulamayı yükle"yi seç.')+'<button class="ipucuk" type="button" aria-label="Kapat">✕</button></div>'}
+return'<div class="note ipucu"><b>'+tx("Ana ekrana ekle")+'</b>'+(DIL==="en"?(ios?'In Safari, tap the Share button, then choose "Add to Home Screen".':'From the browser menu, choose "Add to Home screen" or "Install app".'):(ios?'Safari\'de Paylaş düğmesine dokun, sonra "Ana Ekrana Ekle"yi seç.':'Tarayıcı menüsünden "Ana ekrana ekle" ya da "Uygulamayı yükle"yi seç.'))+'<button class="ipucuk" type="button" aria-label="'+tx("Kapat")+'">✕</button></div>'}
 function home(){
-var h=ust(null,"","Bölgeler")+'<input id="ara" class="ara" type="search" placeholder="Hat, durak ya da yer ara…" aria-label="Hat veya durak ara" autocomplete="off" autocapitalize="off" enterkeyhint="search" value="'+esc(q)+'"><div id="sonuc"></div><div id="ana">';
-var fv=favoriler();h+=ipucu()+fv+'<h2'+(fv?'':' style="margin-top:0"')+'>BÖLGE SEÇİN</h2>';
-VERI.bolgeler.forEach(function(r){h+='<a class="card" href="#'+r.id+'"><div class="nm">'+esc(r.ad)+'</div><div class="go">'+r.duraklar.length+' durak ›</div></a>'});
+var h=ust(null,"",tx("Bölgeler"))+'<input id="ara" class="ara" type="search" placeholder="'+tx("Hat, durak ya da yer ara…")+'" aria-label="'+tx("Hat veya durak ara")+'" autocomplete="off" autocapitalize="off" enterkeyhint="search" value="'+esc(q)+'"><div id="sonuc"></div><div id="ana">';
+var fv=favoriler();h+=ipucu()+fv+'<h2'+(fv?'':' style="margin-top:0"')+'>'+tx("BÖLGE SEÇİN")+'</h2>';
+VERI.bolgeler.forEach(function(r){h+='<a class="card" href="#'+r.id+'"><div class="nm">'+esc(r.ad)+'</div><div class="go">'+r.duraklar.length+' '+tx("durak ›")+'</div></a>'});
 return h+hatlar()+gelismeler()+'</div>'}
 function aramaGuncelle(){var so=document.getElementById("sonuc"),an=document.getElementById("ana");if(!so||!an)return;var r=ara(q);so.innerHTML=r;an.style.display=r?"none":""}
 function bolge(r){
-var h=ust({href:"#",text:"Tüm bölgeler"},"BÖLGE",r.ad)+'<h2 style="margin-top:0">DURAKLAR</h2>';
+var h=ust({href:"#",text:tx("Tüm bölgeler")},tx("BÖLGE"),r.ad)+'<h2 style="margin-top:0">'+tx("DURAKLAR")+'</h2>';
 r.duraklar.slice().sort(function(a,b){return a.ad.localeCompare(b.ad,"tr",{numeric:true,sensitivity:"base"})}).forEach(function(d){
 h+='<a class="card" href="#'+r.id+'/'+d.id+'"><div class="nm">'+esc(d.ad)+'</div><div class="mbs">'+d.sira.map(function(k){return'<span class="mb cond">'+esc(d.hatlar[k].no)+'</span>'}).join("")+'</div></a>'});
 return h}
 function durak(r,d){
-var h=ust({href:"#"+r.id,text:r.ad},"DURAK ADI",d.ad,"#"+r.id+"/"+d.id),k2=null;
+var h=ust({href:"#"+r.id,text:r.ad},tx("DURAK ADI"),d.ad,"#"+r.id+"/"+d.id),k2=null;
 r.duraklar.forEach(function(x){if(x.id===d.karsi)k2=x});
-if(k2)h+='<a class="opp" href="#'+r.id+'/'+k2.id+'">⇄ Karşı durak: '+esc(k2.ad)+' ›</a>';
-h+='<h2 style="margin-top:0">BU DURAKTAN GEÇEN HATLAR</h2>';
+if(k2)h+='<a class="opp" href="#'+r.id+'/'+k2.id+'">⇄ '+tx("Karşı durak")+': '+esc(k2.ad)+' ›</a>';
+h+='<h2 style="margin-top:0">'+tx("BU DURAKTAN GEÇEN HATLAR")+'</h2>';
 d.sira.forEach(function(k){var l=d.hatlar[k];
-h+='<a class="card" href="#'+r.id+'/'+d.id+'/'+encodeURIComponent(k)+'"><div class="row"><div class="badge cond">'+esc(l.no)+'</div><p class="route">'+l.guzergah.split(" > ").map(esc).join(" → ")+'</p></div><div class="go">'+(l.saatler?"Hareket saatleri ›":"Güzergâh ›")+'</div></a>'});
-if(d.not)h+='<div class="note">'+esc(d.not)+'</div>';
+h+='<a class="card" href="#'+r.id+'/'+d.id+'/'+encodeURIComponent(k)+'"><div class="row"><div class="badge cond">'+esc(l.no)+'</div><p class="route">'+l.guzergah.split(" > ").map(esc).join(" → ")+'</p></div><div class="go">'+(l.saatler?tx("Hareket saatleri ›"):tx("Güzergâh ›"))+'</div></a>'});
+if(d.not)h+='<div class="note">'+esc(tx(d.not))+'</div>';
 return h+hata(d.ad,"")}
 function hat(r,d,l,kat,fh){
 var keys=keysOf(l),tk=todayKey(l);
@@ -1618,23 +1724,28 @@ var now=new Date(),nm=now.getHours()*60+now.getMinutes();if(nm<330)nm+=1440;
 var isToday=tab===tk&&times.length>0,nxt=-1,i;
 if(isToday){for(i=0;i<times.length;i++){if(mins(times[i])>=nm){nxt=i;break}}}
 var stops=l.guzergah.split(" > ");
-var h='<div class="top"><div class="trow"><a class="back" href="'+(kat?'#':'#'+r.id+'/'+d.id)+'">‹ '+esc(kat?'Ana sayfa':d.ad)+'</a>'+favBtn(fh)+'</div><div style="display:flex;gap:14px;align-items:center"><div class="badge cond">'+esc(l.no)+'</div><div class="cond" style="font-size:26px;line-height:1.1">'+esc(stops[0])+' – '+esc(stops[stops.length-1])+'</div></div>'+(kat?'<div class="rota">'+stops.map(esc).join(" › ")+'</div>':"")+'</div>';
-var yb0=yonBtn(l,kat);h+=yb0;var tt0=bugunTatil();if(tt0&&l.saatler&&tk!=="her")h+='<div class="note"'+(yb0?"":' style="margin-top:0"')+'>Bugün '+esc(tt0)+' (resmî tatil): Pazar ve tatil günleri tarifesi uygulanır.</div>';
-if(!l.saatler){if(l.siklik)h+='<div class="note" style="margin-top:0">Sefer sıklığı: '+esc(l.siklik)+'.</div>'}
-else if(keys.length<2)h+='<h2 style="margin-top:0">HER GÜN</h2>';
-else h+='<div class="tabs" role="tablist">'+keys.map(function(k){return'<button role="tab" data-t="'+k+'" aria-selected="'+(tab===k)+'">'+LAB[k]+'</button>'}).join("")+'</div>';
-if(isToday)h+='<div class="next"><div><small>Sıradaki sefer</small><b class="cond">'+(nxt>=0?times[nxt].slice(0,5):"—")+'</b></div>'+(nxt>=0?(function(){var kk=kalanYaz(mins(times[nxt])-nm);return'<div style="text-align:right"><b class="cond" style="color:var(--brand)">'+kk[0]+'</b><small>'+kk[1]+'</small></div>'})():'<small style="text-align:right">Bugünkü seferler bitti</small>')+'</div>';
+var h='<div class="top"><div class="trow"><a class="back" href="'+(kat?'#':'#'+r.id+'/'+d.id)+'">‹ '+esc(kat?tx('Ana sayfa'):d.ad)+'</a>'+favBtn(fh)+'</div><div style="display:flex;gap:14px;align-items:center"><div class="badge cond">'+esc(l.no)+'</div><div class="cond" style="font-size:26px;line-height:1.1">'+esc(stops[0])+' – '+esc(stops[stops.length-1])+'</div></div>'+(kat?'<div class="rota">'+stops.map(esc).join(" › ")+'</div>':"")+'</div>';
+var yb0=yonBtn(l,kat);h+=yb0;var tt0=bugunTatil();if(tt0&&l.saatler&&tk!=="her")h+='<div class="note"'+(yb0?"":' style="margin-top:0"')+'>'+(DIL==="en"?"Today is "+esc(tt0)+" (public holiday): the Sunday and holiday timetable applies.":"Bugün "+esc(tt0)+" (resmî tatil): Pazar ve tatil günleri tarifesi uygulanır.")+'</div>';
+if(!l.saatler){if(l.siklik)h+='<div class="note" style="margin-top:0">'+tx("Sefer sıklığı")+': '+esc(tx(l.siklik))+'.</div>'}
+else if(keys.length<2)h+='<h2 style="margin-top:0">'+tx("HER GÜN")+'</h2>';
+else h+='<div class="tabs" role="tablist">'+keys.map(function(k){return'<button role="tab" data-t="'+k+'" aria-selected="'+(tab===k)+'">'+tx(LAB[k])+'</button>'}).join("")+'</div>';
+if(isToday)h+='<div class="next"><div><small>'+tx("Sıradaki sefer")+'</small><b class="cond">'+(nxt>=0?times[nxt].slice(0,5):"—")+'</b></div>'+(nxt>=0?(function(){var kk=kalanYaz(mins(times[nxt])-nm);return'<div style="text-align:right"><b class="cond" style="color:var(--brand)">'+kk[0]+'</b><small>'+kk[1]+'</small></div>'})():'<small style="text-align:right">'+tx("Bugünkü seferler bitti")+'</small>')+'</div>';
 if(times.length){
 h+='<div class="grid">';
 times.forEach(function(t,j){var tt=t.slice(0,5),m=t.charAt(5),c="chip cond",st=star.indexOf(tt)>-1;if(m)c+=" m"+m;if(l.kirmizi&&st)c+=" st";if(l.yesil&&st)c+=" sg";if(isToday){if(j===nxt)c+=" nx";else if(nxt===-1||j<nxt)c+=" past"}h+='<div class="'+c+'">'+tt+(m?SYM[m]:(st?"*":""))+'</div>'});
-h+='</div><div class="note">Hareket saatleri, ilk duraktan kalkış saatini gösterir.</div>'}
-if(l.saatler&&!times.length)h+='<div class="note">Bu günde sefer yoktur.</div>';
-if(l.saatler&&(tab==="pz"||tab==="hs"))h+='<div class="note">Bu tarife '+(tab==="pz"?"Pazar günleri":"hafta sonu")+' ve resmî tatillerde uygulanır.</div>';
-if(l.renk){["k","p","y"].forEach(function(m){if(times.some(function(t){return t.charAt(5)===m}))h+='<div class="note">'+SYM[m]+" "+esc(l.renk[m])+'</div>'})}
-[tab,"hepsi"].forEach(function(k){if(l.notlar&&l.notlar[k])h+='<div class="note">'+esc(l.notlar[k])+'</div>'});
-h+='<h2>GÜZERGÂH</h2><ol class="stops">';
-stops.forEach(function(s){var here=!kat&&s===l.yer;h+='<li'+(here?' class="here"':'')+'>'+esc(s)+(here?'<small>Bu durak</small>':'')+'</li>'});
+h+='</div><div class="note">'+tx("Hareket saatleri, ilk duraktan kalkış saatini gösterir.")+'</div>'}
+if(l.saatler&&!times.length)h+='<div class="note">'+tx("Bu günde sefer yoktur.")+'</div>';
+if(l.saatler&&(tab==="pz"||tab==="hs"))h+='<div class="note">'+(DIL==="en"?"This timetable applies on "+(tab==="pz"?"Sundays":"weekends")+" and public holidays.":"Bu tarife "+(tab==="pz"?"Pazar günleri":"hafta sonu")+" ve resmî tatillerde uygulanır.")+'</div>';
+if(l.renk){["k","p","y"].forEach(function(m){if(times.some(function(t){return t.charAt(5)===m}))h+='<div class="note">'+SYM[m]+" "+esc(tx(l.renk[m]))+'</div>'})}
+[tab,"hepsi"].forEach(function(k){if(l.notlar&&l.notlar[k])h+='<div class="note">'+esc(tx(l.notlar[k]))+'</div>'});
+h+='<h2>'+tx("GÜZERGÂH")+'</h2><ol class="stops">';
+stops.forEach(function(s){var here=!kat&&s===l.yer;h+='<li'+(here?' class="here"':'')+'>'+esc(s)+(here?'<small>'+tx("Bu durak")+'</small>':'')+'</li>'});
 return h+'</ol>'+hata(kat?"":d.ad,l.no)}
+function ayarlar(){
+var h=ust({href:"#",text:tx("Ana sayfa")},"",tx("Ayarlar")),dk=karanlikMi();
+h+='<div class="set"><div class="setrow tg"><div><b>'+tx("Koyu mod")+'</b><small>'+tx("Ekranı koyu renklerle göster")+'</small></div><button type="button" class="sw" role="switch" aria-checked="'+dk+'" aria-label="'+tx("Koyu mod")+'"></button></div></div>';
+h+='<div class="set"><b>Dil / Language</b><div class="seg dilb" role="group" aria-label="Dil / Language">'+[["tr","Türkçe"],["en","English"]].map(function(x){return'<button type="button" data-d="'+x[0]+'" aria-selected="'+(DIL===x[0])+'">'+x[1]+'</button>'}).join("")+'</div><small>'+tx("Bölge ve durak adları çevrilmez.")+'</small></div>';
+return h}
 function render(){
 var p=location.hash.replace(/^#\/?/,"").split("/").map(function(x){try{return decodeURIComponent(x)}catch(e){return x}}).filter(Boolean);
 var r=null,d=null,l=null,h,title="Daai";
@@ -1646,17 +1757,21 @@ if(kv){var gi=Math.min(Math.max(parseInt(p[2],10)||0,0),kv.v.length-1),kl=kv.v[g
 else if(l){h=hat(r,d,l,false,"#"+r.id+"/"+d.id+"/"+encodeURIComponent(p[2]));title=l.no+" – "+d.ad}
 else if(d){tab=null;h=durak(r,d);title=d.ad+" – Daai"}
 else if(r){tab=null;h=bolge(r);title=r.ad+" – Daai"}
-else if(p[0]==="hatlar"&&!p[1]){tab=null;h=hatlarSayfa();title="Hatlar – Daai"}
+else if(p[0]==="hatlar"&&!p[1]){tab=null;h=hatlarSayfa();title=tx("Hatlar")+" – Daai"}
+else if(p[0]==="ayarlar"&&!p[1]){tab=null;h=ayarlar();title=tx("Ayarlar")+" – Daai"}
 else{tab=null;h=home()}
-app.innerHTML=h;document.title=title;window.scrollTo(0,0);
+app.innerHTML=h;document.title=title;document.documentElement.lang=DIL;window.scrollTo(0,0);
 Array.prototype.forEach.call(app.querySelectorAll(".tabs button"),function(b){b.onclick=function(){tab=b.getAttribute("data-t");render()}});
 var fb=app.querySelector(".fav");
-if(fb)fb.onclick=function(){var on=favToggle(fb.getAttribute("data-f"));fb.setAttribute("aria-pressed",on);fb.textContent=on?"★ Favoride":"☆ Favori"};
+if(fb)fb.onclick=function(){var on=favToggle(fb.getAttribute("data-f"));fb.setAttribute("aria-pressed",on);fb.textContent=on?tx("★ Favoride"):tx("☆ Favori")};
 var yb=app.querySelector(".yonbtn");
 if(yb)yb.onclick=function(){var u=yb.getAttribute("data-u");if(yb.getAttribute("data-r")==="1")location.replace(u);else location.hash=u};
 var ai=document.getElementById("ara");if(ai){ai.oninput=function(){q=ai.value;aramaGuncelle()};aramaGuncelle()}
 var ik=app.querySelector(".ipucuk");
 if(ik)ik.onclick=function(){try{localStorage.setItem("ulasim_ipucu","1")}catch(e){}var n=ik.parentNode;n.parentNode.removeChild(n)};
+var sw=app.querySelector(".tg");
+if(sw)sw.onclick=function(){temaDegistir();var y=window.pageYOffset;render();window.scrollTo(0,y)};
+Array.prototype.forEach.call(app.querySelectorAll(".dilb button"),function(b){b.onclick=function(){dilDegistir(b.getAttribute("data-d"));var y=window.pageYOffset;render();window.scrollTo(0,y)}});
 var gb=app.querySelector(".gelbtn");
 if(gb)gb.onclick=function(){var y=window.pageYOffset;gelAcik=!gelAcik;render();window.scrollTo(0,y)};
 var bk=app.querySelector(".back");
