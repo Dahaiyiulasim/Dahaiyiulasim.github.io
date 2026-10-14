@@ -1501,6 +1501,7 @@ var HATA_ALANLARI={durak:"entry.1822978357",hat:"entry.831245240",sayfa:"entry.1
 // Anahtar, veride yazan Türkçe notun BİREBİR aynısıdır. Karşılığı İngilizcesidir.
 // Yeni bir not eklediysen buraya da ekle; eklemezsen İngilizce modda Türkçesi görünür.
 var CEVIRI_EN={
+  "102 nolu hatta 60 dakika içerisinde ücretsiz aktarma verir, ücretsiz aktarma alır.":"Line 102 gives and receives free transfers within 60 minutes.",
   "145 nolu hat, tramvaydan sonra tamamlayıcı aktarma desteklemektedir.":"Line 145 supports complementary transfer after the tram.",
   "Renkli saatlerde 08.00'e kadar 24 ve 134 hatları ile sanayi otobüsleri geçmektedir.":"At the colored times, lines 24 and 134 and industrial shuttle buses also pass until 08:00.",
   "145 nolu hat, tramvaydan sonra tamamlayıcı aktarma desteklemektedir. Renkli saatlerde 08.00'e kadar 24 ve 134 hatları ile sanayi otobüsleri geçmektedir.":"Line 145 supports complementary transfer after the tram. At the colored times, lines 24 and 134 and industrial shuttle buses also pass until 08:00.",
@@ -1517,6 +1518,25 @@ var CEVIRI_EN={
   "Yeşil saatlerde Dünya Bankası'ndan kalkar.":"At the green times, departs from Dünya Bankası.",
   "Yeşil saatlerde belediye otobüsü hizmet vermektedir.":"At the green times, a municipal bus operates."
 };
+// ===== DURAĞA BAĞLI OLMAYAN HATLAR =====
+// Hatlar bölümünde, aramada ve favorilerde görünür; hiçbir durağın sayfasında listelenmez.
+// Kayıt biçimi durak hatlarıyla aynıdır (no, guzergah, saatler, yildiz, renk, notlar). "yer" gerekmez.
+// Çift yönlü hat için her yönü ayrı kayıt yaz: ikinci yönün güzergâhı birincinin tersi olursa "Yön Değiştir" düğmesi çalışır.
+// notlar içinde "hepsi" anahtarı her sekmede görünür.
+var BAGIMSIZ_HATLAR=[
+    {no:"144", guzergah:"60 Evler > Seka > Tren Garı > Fevziye > Sanayi",
+      saatler:{
+        hi:"06:45 07:10 07:20 07:40 07:50 08:10 08:20 08:40 08:50 09:15 09:45 10:10 10:20 10:40 10:50 11:12 11:24 11:36 11:48 12:10 12:20 12:40 12:50 13:10 13:20 13:40 13:50 14:15 14:30 14:45 15:10 15:20 15:40 15:50 16:10 16:20 16:40 16:50 17:12 17:24 17:36 17:48 18:15 18:30 18:45 19:15 19:30 19:45 20:20 20:40 21:20 21:40 22:20 22:40 23:00 00:00",
+        ct:"06:45 07:15 07:30 07:45 08:15 08:30 08:45 09:20 09:40 10:15 10:30 10:45 11:15 11:30 11:45 12:15 12:30 12:45 13:15 13:30 13:45 14:15 14:30 14:45 15:15 15:30 15:45 16:15 16:30 16:45 17:15 17:30 17:45 18:15 18:30 18:45 19:20 19:40 20:20 20:40 21:20 21:40 22:20 22:40 23:00 23:30",
+        pz:"06:45 07:20 07:40 08:20 08:40 09:15 09:30 09:45 10:15 10:30 10:45 11:15 11:30 11:45 12:15 12:30 12:45 13:15 13:30 13:45 14:15 14:30 14:45 15:15 15:30 15:45 16:15 16:30 16:45 17:15 17:30 17:45 18:15 18:30 18:45 19:15 19:30 19:45 20:20 20:40 21:20 21:40 22:20 22:30 23:00 23:30"},
+      notlar:{hepsi:"102 nolu hatta 60 dakika içerisinde ücretsiz aktarma verir, ücretsiz aktarma alır."}},
+    {no:"144", guzergah:"Sanayi > Çarşı > Seka > 60 Evler",
+      saatler:{
+        hi:"07:40 08:10 08:20 08:35 08:50 09:20 09:35 09:55 10:05 10:25 10:45 11:05 11:20 11:35 11:50 12:02 12:24 12:36 12:50 13:05 13:20 13:40 13:50 14:05 14:20 14:35 14:50 15:05 15:30 15:55 16:05 16:20 16:35 16:50 17:05 17:20 17:35 17:50 18:05 18:24 18:36 18:55 19:20 19:30 19:45 20:05 20:30 20:55 21:25 21:50 22:20 22:40 23:05 23:30 00:10 00:45",
+        ct:"07:45 08:15 08:30 08:45 09:15 09:30 09:45 10:20 10:40 11:15 11:30 11:45 12:15 12:30 12:45 13:15 13:30 13:45 14:15 14:30 14:45 15:15 15:30 15:45 16:15 16:30 16:45 17:15 17:30 17:45 18:15 18:30 18:45 19:15 19:30 19:45 20:20 20:40 21:20 21:40 22:20 22:40 23:20 23:40 00:00 00:30",
+        pz:"07:45 08:15 08:30 08:45 09:15 09:30 09:45 10:20 10:40 11:15 11:30 11:45 12:15 12:30 12:45 13:15 13:30 13:45 14:15 14:30 14:45 15:15 15:30 15:45 16:15 16:30 16:45 17:15 17:30 17:45 18:15 18:30 18:45 19:15 19:30 19:45 20:20 20:40 21:20 21:40 22:20 22:40 23:20 23:40 00:00 00:30"},
+      notlar:{hepsi:"102 nolu hatta 60 dakika içerisinde ücretsiz aktarma verir, ücretsiz aktarma alır."}}
+];
 // ===== VERİ BÖLÜMÜ SONU =====
 
 // ===== MOTOR (buradan aşağısına dokunma) =====
@@ -1620,10 +1640,12 @@ function dsirala(a,b){return a.localeCompare(b,"tr",{numeric:true,sensitivity:"b
 function katalog(){
 if(CAT)return CAT;
 CAT={};CATK=[];
-VERI.bolgeler.forEach(function(r){r.duraklar.forEach(function(d){d.sira.forEach(function(k){var l=d.hatlar[k],e=CAT[l.no],dup=false;
+function ekle(l){var e=CAT[l.no],dup=false;
 if(!e){e=CAT[l.no]={no:l.no,v:[],rota:""};CATK.push(l.no)}
 e.v.forEach(function(x){if(x.g===l.guzergah)dup=true});
-if(!dup){e.v.push({g:l.guzergah,l:l});e.rota+=" "+nz(l.guzergah)}})})});
+if(!dup){e.v.push({g:l.guzergah,l:l});e.rota+=" "+nz(l.guzergah)}}
+VERI.bolgeler.forEach(function(r){r.duraklar.forEach(function(d){d.sira.forEach(function(k){ekle(d.hatlar[k])})})});
+(typeof BAGIMSIZ_HATLAR!=="undefined"?BAGIMSIZ_HATLAR:[]).forEach(ekle);
 return CAT}
 function tersIdx(e,gi){var v=e.v,a=v[gi].g.split(" > "),i,b;
 for(i=0;i<v.length;i++){if(i===gi)continue;b=v[i].g.split(" > ");if(b[0]===a[a.length-1]&&b[b.length-1]===a[0])return i}
