@@ -121,6 +121,21 @@ ol.stops li.here{font-weight:600}
 .seg{display:flex;background:var(--soft);border-radius:12px;padding:4px;margin-top:12px}
 .seg button{flex:1;border:0;background:transparent;color:var(--muted);font:600 16px 'Barlow',Arial,sans-serif;padding:11px 8px;border-radius:9px;cursor:pointer;min-height:44px}
 .seg button[aria-selected="true"]{background:var(--card);color:var(--ink)}
+.setlink{display:flex;align-items:center;justify-content:space-between;gap:12px;color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;min-height:44px}
+.setlink b{display:block;font-size:18px;font-weight:600}
+.setlink small{display:block;color:var(--muted);font-size:14px}
+.setlink .chev{flex:none;font-size:26px;line-height:1;color:var(--muted)}
+.setlink:active{background:var(--soft)}
+.sv{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px}
+.sv.cur{border:2px solid var(--brand)}
+.svh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.svad{font-size:28px;line-height:1.1}
+.svr{background:var(--bright);color:var(--onbright);border-radius:6px;padding:0 7px;font-size:12px;font-weight:600;letter-spacing:1px}
+.svoz{font-size:16px;margin-top:8px}
+.svl{margin:10px 0 0;padding:0;list-style:none}
+.svl li{position:relative;padding-left:20px;margin-top:6px;font-size:16px}
+.svl li:before{content:"";position:absolute;left:3px;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--bright)}
+.svbtn{display:block;width:100%;padding:12px;border:0;border-radius:12px;background:var(--soft);color:var(--ink);font:600 16px 'Barlow',Arial,sans-serif;cursor:pointer;min-height:44px;margin-top:4px}
 </style>
 <script>try{var _t=localStorage.getItem("ulasim_tema");if(_t==="dark"||_t==="light")document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 </head>
@@ -2206,7 +2221,13 @@ var EN_UI={
   "Ayarlar":"Settings",
   "Koyu mod":"Dark mode",
   "Ekranı koyu renklerle göster":"Use a dark color scheme",
-  "Bölge ve durak adları çevrilmez.":"Region and stop names are not translated."
+  "Bölge ve durak adları çevrilmez.":"Region and stop names are not translated.",
+  "Sürüm":"Version",
+  "GÜNCEL":"CURRENT",
+  "GÜNCEL SÜRÜM":"CURRENT VERSION",
+  "Diğer sürümler":"Other versions",
+  "Diğer sürümleri gizle":"Hide other versions",
+  "ESKİ SÜRÜMLER":"PREVIOUS VERSIONS"
 };
 var AYLAR_EN=["January","February","March","April","May","June","July","August","September","October","November","December"];
 function tx(s){if(DIL!=="en"||s===undefined||s===null)return s;var v=EN_UI[s];if(v===undefined&&typeof CEVIRI_EN!=="undefined")v=CEVIRI_EN[s];return v===undefined?s:v}
@@ -2214,6 +2235,29 @@ function gv(x,k){return DIL==="en"&&x[k+"_en"]?x[k+"_en"]:x[k]}
 function dilDegistir(d){DIL=d==="en"?"en":"tr";try{localStorage.setItem("ulasim_dil",DIL)}catch(e){}}
 function karanlikMi(){var v=null;try{v=localStorage.getItem("ulasim_tema")}catch(e){}if(v==="dark")return true;if(v==="light")return false;return!!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
 function temaDegistir(){var n=karanlikMi()?"light":"dark";try{localStorage.setItem("ulasim_tema",n)}catch(e){}document.documentElement.setAttribute("data-theme",n)}
+var SURUMLER=[
+  {ad:"V1.0 Final",tarih:"2026-10-15",
+   ozet:"Başlangıç noktasından ayrı ilk bölge eklendi.",ozet_en:"The first region apart from the starting point was added.",
+   m:["Gündoğdu bölgesi 34 durakla tamamlandı."],
+   m_en:["The Gündoğdu region was completed with 34 stops."]},
+  {ad:"V1.0 Beta",tarih:"2026-10-13",
+   ozet:"Bu sürümde verimlilik esas alındı.",ozet_en:"This version focused on efficiency.",
+   m:["Dünya Bankası bölgesi 51 durakla tamamlandı.","Arama, favoriler ve kalan süre eklendi.","Hatlar bölümü ve uygulama formu eklendi.","Ayarlar, İngilizce dil desteği ve koyu mod eklendi.","Proje nihai adını aldı: DAAI Ulaşım."],
+   m_en:["The World Bank region was completed with 51 stops.","Search, favorites and time remaining were added.","The Lines section and the application form were added.","Settings, English language support and dark mode were added.","The project received its final name: DAAI Ulaşım."]},
+  {ad:"V1.0 Alpha",tarih:"2026-10-11",
+   ozet:"Projenin ilk adımları atıldı.",ozet_en:"The first steps of the project were taken.",
+   m:["Dünya Bankası bölgesi 23 durakla açıldı.","Hata bildir düğmesi eklendi.","Gelişmeler bölümü eklendi."],
+   m_en:["The World Bank region was opened with 23 stops.","The Report an error button was added.","The Updates section was added."]}
+],eskiAcik=false;
+function surumKart(x,cur){
+return'<div class="sv'+(cur?' cur':'')+'"><div class="svh"><span class="svad cond">'+esc(x.ad)+'</span>'+(cur?'<span class="svr">'+tx("GÜNCEL")+'</span>':'')+'</div><div class="geltarih">'+tarihYaz(x.tarih)+'</div><div class="svoz">'+esc(gv(x,"ozet"))+'</div><ul class="svl">'+gv(x,"m").map(function(t){return'<li>'+esc(t)+'</li>'}).join("")+'</ul></div>'}
+function surumSayfa(){
+var h=ust({href:"#ayarlar",text:tx("Ayarlar")},"",tx("Sürüm"));
+h+='<h2>'+tx("GÜNCEL SÜRÜM")+'</h2>'+surumKart(SURUMLER[0],true);
+if(SURUMLER.length>1){
+if(eskiAcik){h+='<h2>'+tx("ESKİ SÜRÜMLER")+'</h2>'+SURUMLER.slice(1).map(function(x){return surumKart(x,false)}).join("")}
+h+='<button type="button" class="svbtn">'+tx(eskiAcik?"Diğer sürümleri gizle":"Diğer sürümler")+'</button>'}
+return h}
 var LAB={hi:"Hafta İçi",hs:"Hafta Sonu",ct:"Cumartesi",pz:"Pazar",her:"Her Gün"};
 var app=document.getElementById("app"),tab=null,prev="",cur=location.hash;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -2374,6 +2418,7 @@ function ayarlar(){
 var h=ust({href:"#",text:tx("Ana sayfa")},"",tx("Ayarlar")),dk=karanlikMi();
 h+='<div class="set"><div class="setrow tg"><div><b>'+tx("Koyu mod")+'</b><small>'+tx("Ekranı koyu renklerle göster")+'</small></div><button type="button" class="sw" role="switch" aria-checked="'+dk+'" aria-label="'+tx("Koyu mod")+'"></button></div></div>';
 h+='<div class="set"><b>Dil / Language</b><div class="seg dilb" role="group" aria-label="Dil / Language">'+[["tr","Türkçe"],["en","English"]].map(function(x){return'<button type="button" data-d="'+x[0]+'" aria-selected="'+(DIL===x[0])+'">'+x[1]+'</button>'}).join("")+'</div><small>'+tx("Bölge ve durak adları çevrilmez.")+'</small></div>';
+h+='<a class="set setlink" href="#ayarlar/surum"><div><b>'+tx("Sürüm")+'</b><small>'+esc(SURUMLER[0].ad)+'</small></div><span class="chev" aria-hidden="true">›</span></a>';
 return h}
 function render(){
 var p=location.hash.replace(/^#\/?/,"").split("/").map(function(x){try{return decodeURIComponent(x)}catch(e){return x}}).filter(Boolean);
@@ -2387,6 +2432,7 @@ else if(l){h=hat(r,d,l,false,"#"+r.id+"/"+d.id+"/"+encodeURIComponent(p[2]));tit
 else if(d){tab=null;h=durak(r,d);title=d.ad+" – Daai"}
 else if(r){tab=null;h=bolge(r);title=r.ad+" – Daai"}
 else if(p[0]==="hatlar"&&!p[1]){tab=null;h=hatlarSayfa();title=tx("Hatlar")+" – Daai"}
+else if(p[0]==="ayarlar"&&p[1]==="surum"&&!p[2]){tab=null;h=surumSayfa();title=tx("Sürüm")+" – Daai"}
 else if(p[0]==="ayarlar"&&!p[1]){tab=null;h=ayarlar();title=tx("Ayarlar")+" – Daai"}
 else{tab=null;h=home()}
 app.innerHTML=h;document.title=title;document.documentElement.lang=DIL;window.scrollTo(0,0);
@@ -2403,6 +2449,8 @@ if(sw)sw.onclick=function(){temaDegistir();var y=window.pageYOffset;render();win
 Array.prototype.forEach.call(app.querySelectorAll(".dilb button"),function(b){b.onclick=function(){dilDegistir(b.getAttribute("data-d"));var y=window.pageYOffset;render();window.scrollTo(0,y)}});
 var gb=app.querySelector(".gelbtn");
 if(gb)gb.onclick=function(){var y=window.pageYOffset;gelAcik=!gelAcik;render();window.scrollTo(0,y)};
+var sb=app.querySelector(".svbtn");
+if(sb)sb.onclick=function(){var y=window.pageYOffset;eskiAcik=!eskiAcik;render();window.scrollTo(0,y)};
 var bk=app.querySelector(".back");
 if(bk)bk.onclick=function(e){if(norm(prev)===norm(bk.getAttribute("href"))){e.preventDefault();history.back()}}}
 window.addEventListener("hashchange",function(){prev=cur;cur=location.hash;render()});
