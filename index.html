@@ -103,6 +103,15 @@ ol.stops li.here{font-weight:600}
 .fav[aria-pressed="true"]{background:var(--bright);border-color:var(--bright);color:var(--onbright)}
 .ipucu{position:relative;margin:0 0 16px;padding-right:48px;font-size:15px}
 .ipucu b{display:block;font-size:16px;margin-bottom:2px}
+.ipucu.ipk{display:flex;align-items:center;gap:2px;min-height:52px;padding-top:4px;padding-bottom:4px}
+.ipucu.ipk b{display:inline;margin:0;font-size:17px}
+.ipi{flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;-webkit-tap-highlight-color:transparent;border-radius:50%}
+.ipi svg{width:24px;height:24px}
+.ipi:active{background:var(--soft)}
+.adim{margin:12px 0 0;padding:0;list-style:none;counter-reset:a}
+.adim li{counter-increment:a;position:relative;padding-left:36px;margin-top:12px;font-size:17px;line-height:1.5}
+.adim li:before{content:counter(a);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--bright);color:var(--onbright);font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center}
+.sv .adim+.svoz{margin-top:14px;color:var(--muted);font-size:15px}
 .ipucuk{position:absolute;top:2px;right:2px;width:44px;height:44px;border:0;background:transparent;color:var(--muted);font-size:20px;cursor:pointer}
 .mb{display:inline-flex;min-width:38px;height:30px;padding:0 8px;border-radius:7px;background:var(--bright);color:var(--onbright);font-size:19px;align-items:center;justify-content:center}
 .infob{flex:none;margin-top:-2px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.6);border-radius:50%;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}
@@ -2271,6 +2280,10 @@ var EN_UI={
   "Ekranı koyu renklerle göster":"Use a dark color scheme",
   "Bölge ve durak adları çevrilmez.":"Region and stop names are not translated.",
   "Sürüm":"Version",
+  "iPhone ve Android":"iPhone and Android",
+  "Ana ekrana ekleyin":"Add to home screen",
+  "Adımları göster":"Show steps",
+  "Ana sayfa":"Home",
   "BÖLGENİN HİKÂYESİ":"STORY OF THE REGION",
   "Bölgenin hikâyesi":"Region story",
   "GÜNCEL":"CURRENT",
@@ -2418,7 +2431,22 @@ var ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.tes
 if(!ios&&!/Android/.test(ua))return"";
 if(navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches))return"";
 try{if(localStorage.getItem("ulasim_ipucu")==="1")return""}catch(e){}
-return'<div class="note ipucu"><b>'+tx("Ana ekrana ekle")+'</b>'+(DIL==="en"?(ios?'In Safari, tap the Share button, then choose "Add to Home Screen".':'From the browser menu, choose "Add to Home screen" or "Install app".'):(ios?'Safari\'de Paylaş düğmesine dokun, sonra "Ana Ekrana Ekle"yi seç.':'Tarayıcı menüsünden "Ana ekrana ekle" ya da "Uygulamayı yükle"yi seç.'))+'<button class="ipucuk" type="button" aria-label="'+tx("Kapat")+'">✕</button></div>'}
+return'<div class="note ipucu ipk"><b>'+tx("Ana ekrana ekleyin")+'</b><a class="ipi" href="#ana-ekran" aria-label="'+tx("Adımları göster")+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg></a><button class="ipucuk" type="button" aria-label="'+tx("Kapat")+'">✕</button></div>'}
+var ANAEKRAN=[
+  {ad:"iPhone", tarayici:"Safari",
+   adimlar:["Siteyi Safari'de açın.","Paylaş düğmesine basın (kutudan yukarı ok çıkan simge). Sürüme göre bu düğme altta ya da sağ alttaki üç nokta menüsünün içinde olabilir.","Aşağı kaydırıp “Ana Ekrana Ekle”yi seçin.","Sağ üstteki “Ekle”ye basın."],
+   adimlar_en:["Open the site in Safari.","Tap the Share button (the box with an arrow pointing up). Depending on your version, it may be at the bottom or inside the three-dot menu at the bottom right.","Scroll down and choose “Add to Home Screen”.","Tap “Add” at the top right."]},
+  {ad:"Android", tarayici:"Chrome",
+   adimlar:["Siteyi Chrome'da açın.","Sağ üstteki üç noktaya basın.","Aşağı kaydırıp “Yükle ve kısayol oluştur”a basın."],
+   adimlar_en:["Open the site in Chrome.","Tap the three dots at the top right.","Scroll down and tap “Install and create shortcut”."],
+   not:"Resmi uygulama mağazası dışından indirildiği için cihaz riskli algılayabilir ama tamamen güvenli olduğundan emin olabilirsiniz.",
+   not_en:"Because the app is not downloaded from an official app store, your device may flag it as risky, but you can be sure it is completely safe."}
+];
+function anaEkranSayfa(){
+var ay=norm(prev)==="#ayarlar",h=ust(ay?{href:"#ayarlar",text:tx("Ayarlar")}:{href:"#",text:tx("Ana sayfa")},"",tx("Ana ekrana ekleyin"));
+ANAEKRAN.forEach(function(x){
+h+='<div class="sv"><div class="svh"><span class="svad cond">'+esc(x.ad)+'</span><span class="svr">'+esc(x.tarayici)+'</span></div><ol class="adim">'+gv(x,"adimlar").map(function(t){return'<li>'+esc(t)+'</li>'}).join("")+'</ol>'+(x.not?'<div class="svoz">'+esc(gv(x,"not"))+'</div>':"")+'</div>'});
+return h}
 function home(){
 var h=ust(null,"",tx("Bölgeler"))+'<input id="ara" class="ara" type="search" placeholder="'+tx("Hat, durak ya da yer ara…")+'" aria-label="'+tx("Hat veya durak ara")+'" autocomplete="off" autocapitalize="off" enterkeyhint="search" value="'+esc(q)+'"><div id="sonuc"></div><div id="ana">';
 var fv=favoriler();h+=ipucu()+fv+'<h2'+(fv?'':' style="margin-top:0"')+'>'+tx("BÖLGE SEÇİN")+'</h2>';
@@ -2474,6 +2502,7 @@ function ayarlar(){
 var h=ust({href:"#",text:tx("Ana sayfa")},"",tx("Ayarlar")),dk=karanlikMi();
 h+='<div class="set"><div class="setrow tg"><div><b>'+tx("Koyu mod")+'</b><small>'+tx("Ekranı koyu renklerle göster")+'</small></div><button type="button" class="sw" role="switch" aria-checked="'+dk+'" aria-label="'+tx("Koyu mod")+'"></button></div></div>';
 h+='<div class="set"><b>Dil / Language</b><div class="seg dilb" role="group" aria-label="Dil / Language">'+[["tr","Türkçe"],["en","English"]].map(function(x){return'<button type="button" data-d="'+x[0]+'" aria-selected="'+(DIL===x[0])+'">'+x[1]+'</button>'}).join("")+'</div><small>'+tx("Bölge ve durak adları çevrilmez.")+'</small></div>';
+h+='<a class="set setlink" href="#ana-ekran"><div><b>'+tx("Ana ekrana ekle")+'</b><small>'+tx("iPhone ve Android")+'</small></div><span class="chev" aria-hidden="true">›</span></a>';
 h+='<a class="set setlink" href="#ayarlar/surum"><div><b>'+tx("Sürüm")+'</b><small>'+esc(SURUMLER[0].ad)+'</small></div><span class="chev" aria-hidden="true">›</span></a>';
 return h}
 function render(){
@@ -2489,6 +2518,7 @@ else if(l){h=hat(r,d,l,false,"#"+r.id+"/"+d.id+"/"+encodeURIComponent(p[2]));tit
 else if(d){tab=null;h=durak(r,d);title=d.ad+" – Daai"}
 else if(r&&p[1]==="hikaye"&&r.hikaye&&!p[2]){tab=null;h=hikayeSayfa(r);title=tx("BÖLGENİN HİKÂYESİ")+" – "+r.ad+" – Daai"}
 else if(r){tab=null;h=bolge(r);title=r.ad+" – Daai"}
+else if(p[0]==="ana-ekran"&&!p[1]){tab=null;h=anaEkranSayfa();title=tx("Ana ekrana ekleyin")+" – Daai"}
 else if(p[0]==="hatlar"&&!p[1]){tab=null;h=hatlarSayfa();title=tx("Hatlar")+" – Daai"}
 else if(p[0]==="ayarlar"&&p[1]==="surum"&&!p[2]){tab=null;h=surumSayfa();title=tx("Sürüm")+" – Daai"}
 else if(p[0]==="ayarlar"&&!p[1]){tab=null;h=ayarlar();title=tx("Ayarlar")+" – Daai"}
