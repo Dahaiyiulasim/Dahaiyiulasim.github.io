@@ -78,6 +78,9 @@ ol.stops li.here{font-weight:600}
 .chip.my:not(.nx){color:#1B7F37}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.mk:not(.nx){color:#FF8A8A}:root:not([data-theme="light"]) .chip.mp:not(.nx){color:#FF8AE2}:root:not([data-theme="light"]) .chip.my:not(.nx){color:#5BE37A}}
 :root[data-theme="dark"] .chip.mk:not(.nx){color:#FF8A8A}:root[data-theme="dark"] .chip.mp:not(.nx){color:#FF8AE2}:root[data-theme="dark"] .chip.my:not(.nx){color:#5BE37A}
+.chip.mm:not(.nx){color:#1565C0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.mm:not(.nx){color:#7DB4FF}}
+:root[data-theme="dark"] .chip.mm:not(.nx){color:#7DB4FF}
 .gel{--tc:34,160,70;--ta:.14;background-color:var(--card);background-image:linear-gradient(rgba(var(--tc),var(--ta)),rgba(var(--tc),var(--ta)));border-radius:14px;padding:14px 16px;margin-bottom:10px}
 .gel.ti{--tc:225,160,0;--ta:.17}
 .gel.td{--tc:215,60,60;--ta:.13}
@@ -2195,7 +2198,15 @@ var CEVIRI_EN={
   "Pembe saatlerde Bayındırlık Son Durak'tan kalkar.":"At the pink times, departs from Bayındırlık Son Durak.",
   "Pembe saatlerde Bayındırlık'tan kalkar.":"At the pink times, departs from Bayındırlık.",
   "Yeşil saatlerde Dünya Bankası'ndan kalkar.":"At the green times, departs from Dünya Bankası.",
-  "Yeşil saatlerde belediye otobüsü hizmet vermektedir.":"At the green times, a municipal bus operates."
+  "Yeşil saatlerde belediye otobüsü hizmet vermektedir.":"At the green times, a municipal bus operates.",
+  "Kırmızı saatlerde Sarıcalar'dan kalkar; Sekbanlı, Kabaoğlu ve Malta güzergâhını kullanır.":"At the red times, departs from Sarıcalar and uses the Sekbanlı, Kabaoğlu and Malta route.",
+  "Yeşil saatlerde Malta Mevkii güzergâhına girmez.":"At the green times, does not enter the Malta Mevkii route.",
+  "Mavi saatlerde Malta Mevkii güzergâhına girmez, Sarıcalar'a gider.":"At the blue times, does not enter the Malta Mevkii route and goes to Sarıcalar.",
+  "Kırmızı saatlerde İmalat Sk.–Yunus Emre Cami–Nihan Sk güzergâhını kullanarak Gazanfer Bilge Bulvarı'na bağlanır, Sarper Konutları'na girmez (araçlar 11 T tabela koduyla çalışır).":"At the red times, follows the İmalat Sk.–Yunus Emre Cami–Nihan Sk route to join Gazanfer Bilge Boulevard and does not enter Sarper Konutları (vehicles run under the 11 T destination code).",
+  "Yeşil saatlerde İmalat Sk.–Yunus Emre Cami–Nigar Sokak–Nihan Sk güzergâhını kullanarak Gazanfer Bilge Bulvarı'na bağlanır, Sarper Konutları'na girmez (araçlar 11 T tabela koduyla çalışır).":"At the green times, follows the İmalat Sk.–Yunus Emre Cami–Nigar Sokak–Nihan Sk route to join Gazanfer Bilge Boulevard and does not enter Sarper Konutları (vehicles run under the 11 T destination code).",
+  "Mavi saatlerde Devran Caddesi 1 durağından kalkar.":"At the blue times, departs from Devran Caddesi 1.",
+  "Kırmızı saatlerde Eski İstanbul Yolu İzmit Kent Konut 1-2-3 güzergâhından gider.":"At the red times, goes via the Eski İstanbul Yolu İzmit Kent Konut 1-2-3 route.",
+  "Yeşil saatlerde 12 metrelik araçlar çalışacaktır.":"At the green times, 12-metre vehicles will operate."
 };
 // ===== DURAĞA BAĞLI OLMAYAN HATLAR =====
 // Hatlar bölümünde, aramada ve favorilerde görünür; hiçbir durağın sayfasında listelenmez.
@@ -2214,7 +2225,48 @@ var BAGIMSIZ_HATLAR=[
         hi:"07:40 08:10 08:20 08:35 08:50 09:20 09:35 09:55 10:05 10:25 10:45 11:05 11:20 11:35 11:50 12:02 12:24 12:36 12:50 13:05 13:20 13:40 13:50 14:05 14:20 14:35 14:50 15:05 15:30 15:55 16:05 16:20 16:35 16:50 17:05 17:20 17:35 17:50 18:05 18:24 18:36 18:55 19:20 19:30 19:45 20:05 20:30 20:55 21:25 21:50 22:20 22:40 23:05 23:30 00:10 00:45",
         ct:"07:45 08:15 08:30 08:45 09:15 09:30 09:45 10:20 10:40 11:15 11:30 11:45 12:15 12:30 12:45 13:15 13:30 13:45 14:15 14:30 14:45 15:15 15:30 15:45 16:15 16:30 16:45 17:15 17:30 17:45 18:15 18:30 18:45 19:15 19:30 19:45 20:20 20:40 21:20 21:40 22:20 22:40 23:20 23:40 00:00 00:30",
         pz:"07:45 08:15 08:30 08:45 09:15 09:30 09:45 10:20 10:40 11:15 11:30 11:45 12:15 12:30 12:45 13:15 13:30 13:45 14:15 14:30 14:45 15:15 15:30 15:45 16:15 16:30 16:45 17:15 17:30 17:45 18:15 18:30 18:45 19:15 19:30 19:45 20:20 20:40 21:20 21:40 22:20 22:40 23:20 23:40 00:00 00:30"},
-      notlar:{hepsi:"102 nolu hatta 60 dakika içerisinde ücretsiz aktarma verir, ücretsiz aktarma alır."}}
+      notlar:{hepsi:"102 nolu hatta 60 dakika içerisinde ücretsiz aktarma verir, ücretsiz aktarma alır."}},
+    {no:"69", guzergah:"Sekbanlı > Kabaoğlu > Üçyol > Batı Terminali",
+      saatler:{
+        her:"07:00k 09:30y 12:30 18:30y 20:20y"},
+      renk:{k:"Kırmızı saatlerde Sarıcalar'dan kalkar; Sekbanlı, Kabaoğlu ve Malta güzergâhını kullanır.", y:"Yeşil saatlerde Malta Mevkii güzergâhına girmez.", m:"Mavi saatlerde Malta Mevkii güzergâhına girmez, Sarıcalar'a gider."}},
+    {no:"69", guzergah:"Batı Terminali > Üçyol > Kabaoğlu > Sekbanlı",
+      saatler:{
+        hi:"08:45y 11:45 17:45m 19:30",
+        hs:"08:45y 11:45 17:45 19:30"},
+      renk:{k:"Kırmızı saatlerde Sarıcalar'dan kalkar; Sekbanlı, Kabaoğlu ve Malta güzergâhını kullanır.", y:"Yeşil saatlerde Malta Mevkii güzergâhına girmez.", m:"Mavi saatlerde Malta Mevkii güzergâhına girmez, Sarıcalar'a gider."}},
+    {no:"11", guzergah:"Doğu Kışla > Santral > Erenler > İzmit Kent > Üçyol > Çarşı > Tren Garı > Fevziye",
+      saatler:{
+        hi:"07:00k 07:05 07:10 07:20 07:30 07:40 07:50 08:00 08:05y 08:10 08:20 08:30 08:40 08:50 09:00 09:05k 09:12 09:24 09:36 09:48 10:00 10:10k 10:14 10:28 10:42 10:56 11:10 11:15k 11:24 11:38 11:52 12:06 12:20 12:25y 12:34 12:48 13:02 13:16 13:30 13:35k 13:44 13:58 14:12 14:25 14:38 14:45k 14:51 15:04 15:18 15:31 15:44 15:55k 15:57 16:09 16:20 16:31 16:42 16:53 17:04 17:05y 17:15 17:26 17:37 17:48 18:00 18:12 18:20k 18:24 18:36 18:49 19:02 19:15 19:28 19:30k 19:42 19:58 20:12 20:26 20:40k 20:42 20:55 21:10 21:25 21:40k 21:45 22:00 22:20 22:40 23:00",
+        ct:"07:00k 07:05 07:10 07:20 07:30 07:40 07:50 08:00 08:05y 08:10 08:20 08:30 08:40 08:50 09:00 09:05k 09:12 09:24 09:36 09:48 10:00 10:10k 10:14 10:28 10:42 10:56 11:10 11:15k 11:24 11:38 11:52 12:06 12:20 12:25y 12:34 12:48 13:02 13:16 13:30 13:35k 13:44 13:58 14:12 14:25 14:38 14:45k 14:51 15:04 15:18 15:31 15:44 15:55k 15:57 16:09 16:20 16:31 16:42 16:53 17:04 17:05y 17:15 17:26 17:37 17:48 18:00 18:12 18:20k 18:24 18:36 18:49 19:02 19:15 19:28 19:30k 19:42 19:58 20:12 20:26 20:40k 20:42 20:55 21:10 21:25 21:40k 21:45 22:00 22:20 22:40 23:00",
+        pz:"07:00 07:20 07:40 07:55 08:00y 08:20 08:40 08:55 09:00k 09:20 09:40 09:55 10:00k 10:20 10:40 10:55 11:00k 11:20 11:40 11:55 12:00y 12:20 12:40 12:55 13:00k 13:20 13:40 13:55 14:00k 14:20 14:40 14:55 15:00k 15:20 15:40 15:55 16:00k 16:20 16:40 16:55 17:00y 17:20 17:40 17:55 18:00k 18:20 18:40 18:55 19:00k 19:20 19:40 19:55 20:00k 20:20 20:40 20:55 21:00k 21:20 21:40 21:55 22:20 22:40 23:00"},
+      renk:{k:"Kırmızı saatlerde İmalat Sk.–Yunus Emre Cami–Nihan Sk güzergâhını kullanarak Gazanfer Bilge Bulvarı'na bağlanır, Sarper Konutları'na girmez (araçlar 11 T tabela koduyla çalışır).", y:"Yeşil saatlerde İmalat Sk.–Yunus Emre Cami–Nigar Sokak–Nihan Sk güzergâhını kullanarak Gazanfer Bilge Bulvarı'na bağlanır, Sarper Konutları'na girmez (araçlar 11 T tabela koduyla çalışır).", m:"Mavi saatlerde Devran Caddesi 1 durağından kalkar."}},
+    {no:"11", guzergah:"Erenler > İzmit Kent > Üçyol > Çarşı > Tren Garı > Fevziye > Doğu Kışla",
+      saatler:{
+        hi:"06:10m 06:20m 06:30m 06:45m 07:00m",
+        ct:"06:10m 06:20m 06:30m 06:45m 07:00m",
+        pz:"06:30m"},
+      renk:{k:"Kırmızı saatlerde İmalat Sk.–Yunus Emre Cami–Nihan Sk güzergâhını kullanarak Gazanfer Bilge Bulvarı'na bağlanır, Sarper Konutları'na girmez (araçlar 11 T tabela koduyla çalışır).", y:"Yeşil saatlerde İmalat Sk.–Yunus Emre Cami–Nigar Sokak–Nihan Sk güzergâhını kullanarak Gazanfer Bilge Bulvarı'na bağlanır, Sarper Konutları'na girmez (araçlar 11 T tabela koduyla çalışır).", m:"Mavi saatlerde Devran Caddesi 1 durağından kalkar."}},
+    {no:"16", guzergah:"Doğu Kışla > Çarşı > Santral > Üçyol > İzmit Kent > Erenler",
+      saatler:{
+        hi:"07:30k 07:50 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:00 16:30 17:10 17:50 18:30 19:20 20:00",
+        ct:"07:30k 07:50 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:30 16:00 16:30 17:10 17:50 18:30 19:20 20:00",
+        pz:"07:30k 08:30 09:30 10:30 11:30 12:30 13:30 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:30 19:20 20:00"},
+      renk:{k:"Kırmızı saatlerde Eski İstanbul Yolu İzmit Kent Konut 1-2-3 güzergâhından gider."}},
+    {no:"16", guzergah:"Erenler > İzmit Kent > Üçyol > Santral > Doğu Kışla",
+      saatler:{
+        her:"07:00"}},
+    {no:"33", guzergah:"Umuttepe > İzmit Kent > Üçyol > Fevziye > Batı Terminali",
+      saatler:{
+        hi:"06:30 06:58 07:10 07:20 07:30y 07:48 08:00y 08:04 08:08 08:12 08:20 08:25 08:30 08:35 08:40 08:46 08:52 09:00y 09:25 09:35 09:45 10:00y 10:20 10:26 10:32 10:37 10:42 11:00y 11:08 11:20 11:26 11:32 11:38 11:44 11:50 12:00y 12:24 12:33 12:42 12:50 13:00y 13:07 13:21 13:27 13:34 13:40 13:46 13:52 14:00y 14:07 14:20 14:25 14:30 14:35 14:40 14:45 14:50 14:55 15:00y 15:05 15:10 15:19 15:22 15:25 15:29 15:33 15:36 15:39 15:42 15:45 15:48 15:51 15:54 16:00y 16:05 16:10 16:18 16:21 16:24 16:27 16:30 16:33 16:36 16:39 16:43 16:47 16:52 17:00y 17:19 17:23 17:28 17:33 17:39 17:45 18:00y 18:22 18:29 18:35 18:40 18:45 18:50 19:00y 19:30 19:45 20:00y 20:30 20:45 21:00y 21:25 21:35 21:45 22:00y 22:40 22:52 23:00y 23:15 23:40 00:00y",
+        ct:"06:30 06:45 07:00 07:10 07:20 07:30y 07:50 08:00y 08:07 08:22 08:29 08:36 08:43 08:50 09:00y 09:29 09:43 10:00y 10:25 10:35 10:45 11:00y 11:25 11:35 11:45 12:00y 12:07 12:25 12:35 12:45 13:00y 13:23 13:31 13:39 13:47 14:00y 14:07 14:26 14:37 14:48 15:00y 15:07 15:22 15:29 15:36 15:43 15:51 16:00y 16:07 16:23 16:31 16:39 16:48 17:00y 17:22 17:29 17:36 17:43 17:50 18:00y 18:24 18:33 18:42 18:51 19:00y 19:24 19:33 19:42 19:51 20:00y 20:25 20:35 20:45 21:00y 21:25 21:35 21:45 22:00y 22:25 22:35 22:45 23:00y 23:20 23:40 00:00y",
+        pz:"06:30 06:45 07:00 07:10 07:20 07:30y 07:50 08:00y 08:07 08:22 08:29 08:36 08:43 08:50 09:00y 09:29 09:43 10:00y 10:25 10:35 10:45 11:00y 11:25 11:35 11:45 12:00y 12:07 12:25 12:35 12:45 13:00y 13:08 13:23 13:31 13:39 13:47 14:00y 14:07 14:26 14:37 14:48 15:00y 15:07 15:22 15:29 15:36 15:43 15:51 16:00y 16:07 16:23 16:31 16:39 16:48 17:00y 17:22 17:29 17:36 17:43 17:50 18:00y 18:24 18:33 18:42 18:51 19:00y 19:24 19:33 19:42 19:51 20:00y 20:25 20:35 20:45 21:00y 21:25 21:35 21:45 22:00y 22:25 22:35 22:45 23:00y 23:20 23:40 00:00y"},
+      renk:{y:"Yeşil saatlerde 12 metrelik araçlar çalışacaktır."}},
+    {no:"33", guzergah:"Batı Terminali > Tren Garı > Fevziye > Bulvar > Üçyol > İzmit Kent > Umuttepe",
+      saatler:{
+        hi:"06:30 06:45 07:00y 07:12 07:25 07:32 07:38 07:43 07:48 07:53 07:57 08:00 08:04 08:10y 08:13 08:16 08:19 08:23 08:28 08:33 08:40 08:47 09:00y 09:10 09:20 09:35 09:45 10:00y 10:08 10:23 10:33 10:43 11:00y 11:08 11:21 11:28 11:35 11:42 11:50 12:00y 12:08 12:25 12:30 12:35 12:40 12:45 12:53 13:00y 13:07 13:17 13:23 13:29 13:35 13:40 13:45 13:50 13:55 14:00y 14:04 14:08 14:12 14:16 14:20 14:28 14:32 14:36 14:40 14:45 14:50 14:55 15:00y 15:07 15:14 15:25 15:30 15:35 15:39 15:43 15:47 15:51 16:00y 16:04 16:08 16:12 16:16 16:24 16:28 16:32 16:36 16:40 16:48 17:00y 17:08 17:24 17:30 17:36 17:42 17:48 18:00y 18:08 18:30 18:45 19:00y 19:08 19:20 19:29 19:37 19:45 20:00y 20:08 20:16 20:24 20:32 20:40 20:48 21:00y 21:10 21:26 21:32 21:38 21:44 21:50 22:00y 22:07 22:11 22:15 22:20 22:25 22:30 22:36 22:42 22:48 23:00y 23:15 23:30 23:45 00:02 00:20 01:00y",
+        hs:"06:30 06:45 07:00y 07:10 07:20 07:30 07:40 07:50 08:10y 08:12 08:28 08:38 08:48 09:00y 09:12 09:32 09:45 10:00y 10:12 10:28 10:38 10:48 11:00y 11:12 11:28 11:38 11:48 12:00y 12:12 12:32 12:44 13:00y 13:12 13:32 13:44 14:00y 14:07 14:23 14:32 14:41 14:49 15:00y 15:07 15:23 15:32 15:41 15:49 16:00y 16:10 16:20 16:30 16:40 16:50 17:00y 17:06 17:12 17:24 17:38 17:48 18:00y 18:12 18:25 18:36 18:47 19:00y 19:12 19:32 19:44 20:00y 20:12 20:32 20:44 21:00y 21:12 21:34 21:46 22:00y 22:10 22:28 22:45 23:00y 23:15 23:22 23:43 23:55 00:20 01:00y"},
+      renk:{y:"Yeşil saatlerde 12 metrelik araçlar çalışacaktır."}}
 ];
 // ===== VERİ BÖLÜMÜ SONU =====
 
@@ -2325,7 +2377,7 @@ var LAB={hi:"Hafta İçi",hs:"Hafta Sonu",ct:"Cumartesi",pz:"Pazar",her:"Her Gü
 var app=document.getElementById("app"),tab=null,prev="",cur=location.hash;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function L(x){return x?String(x).split(" "):[]}
-var SYM={k:"*",p:"†",y:"‡"},gelAcik=false,AYLAR=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+var SYM={k:"*",p:"†",y:"‡",m:"§"},gelAcik=false,AYLAR=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
 var TUR={genel:{ad:"Genel",c:"tg"},iyilestirme:{ad:"İyileştirme",c:"ti"},duzeltme:{ad:"Düzeltme",c:"td"}};
 function tarihYaz(t){var p=t.split("-");return +p[2]+" "+(DIL==="en"?AYLAR_EN:AYLAR)[+p[1]-1]+" "+p[0]}
 function gelismeler(){
@@ -2493,7 +2545,7 @@ times.forEach(function(t,j){var tt=t.slice(0,5),m=t.charAt(5),c="chip cond",st=s
 h+='</div><div class="note">'+tx("Hareket saatleri, ilk duraktan kalkış saatini gösterir.")+'</div>'}
 if(l.saatler&&!times.length)h+='<div class="note">'+tx("Bu günde sefer yoktur.")+'</div>';
 if(l.saatler&&(tab==="pz"||tab==="hs"))h+='<div class="note">'+(DIL==="en"?"This timetable applies on "+(tab==="pz"?"Sundays":"weekends")+" and public holidays.":"Bu tarife "+(tab==="pz"?"Pazar günleri":"hafta sonu")+" ve resmî tatillerde uygulanır.")+'</div>';
-if(l.renk){["k","p","y"].forEach(function(m){if(times.some(function(t){return t.charAt(5)===m}))h+='<div class="note">'+SYM[m]+" "+esc(tx(l.renk[m]))+'</div>'})}
+if(l.renk){["k","p","y","m"].forEach(function(m){if(times.some(function(t){return t.charAt(5)===m}))h+='<div class="note">'+SYM[m]+" "+esc(tx(l.renk[m]))+'</div>'})}
 [tab,"hepsi"].forEach(function(k){if(l.notlar&&l.notlar[k])h+='<div class="note">'+esc(tx(l.notlar[k]))+'</div>'});
 h+='<h2>'+tx("GÜZERGÂH")+'</h2><ol class="stops">';
 stops.forEach(function(s){var here=!kat&&s===l.yer;h+='<li'+(here?' class="here"':'')+'>'+esc(s)+(here?'<small>'+tx("Bu durak")+'</small>':'')+'</li>'});
